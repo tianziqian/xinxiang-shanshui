@@ -1050,6 +1050,7 @@ function renderStudio(){
   for(var i=0;i<KINDS.length;i++){
     chips += '<button id="chip-'+KINDS[i].k+'" onclick="pickKind(\''+KINDS[i].k+'\')">'+KINDS[i].n+'</button>';
   }
+  var skippedLeft = S.skipped.length;
   show(
     '<p class="end-title">画 意</p>' +
     '<p class="hint">这幅画现在交给你。想添什么，先点一个物象，再在画上点一处落笔；' +
@@ -1061,6 +1062,12 @@ function renderStudio(){
     '<button onclick="undoMark()">取消上一笔</button>' +
     '<button id="alive-btn" onclick="toggleAlive()">' + (S.alive?'静下来':'动起来') + '</button>' +
     '<button onclick="exportPNG()">导出画卷</button>' +
+    '</div>' +
+    '<div class="btns">' +
+    '<button onclick="copyPrompt()">复制这段文字去见AI</button>' +
+    '<button onclick="duiduView()">两卷对读</button>' +
+    (skippedLeft>0 ? '<button onclick="reAnswer()">补答略过的 ' + skippedLeft + ' 问</button>' : '') +
+    '<button class="quiet" onclick="restart()">重新入山</button>' +
     '<button class="quiet" onclick="exitStudio()">回到成卷</button>' +
     '</div>' +
     '<p class="warn" id="studio-note"></p>' +
