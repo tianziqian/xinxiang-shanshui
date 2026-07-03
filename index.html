@@ -88,6 +88,9 @@
     h1.title{font-size:26px;}
     .question{font-size:18px;}
     body{padding:14px 8px 40px;}
+    .st0{opacity:0.28;}
+    svg{min-height:280px;}
+    .paper{min-height:280px;}
   }
 </style>
 </head>
@@ -107,7 +110,7 @@
       </filter>
     </defs>
     <rect x="0" y="0" width="900" height="520" fill="#f5f1e6"/>
-    <rect x="0" y="0" width="900" height="520" filter="url(#grain)"/>
+    <rect id="grain-rect" x="0" y="0" width="900" height="520" filter="url(#grain)"/>
 
     <g id="g-shan" class="dim-g st0" filter="url(#brush)">
       <path d="M455 240 C490 200 525 168 565 164 C605 160 625 190 660 198 C685 203 700 178 725 172 C755 165 775 185 805 190 C835 195 860 178 900 200 L900 240 Z" fill="#c0cbc4"/>
@@ -317,6 +320,15 @@
 </div>
 
 <script>
+var IS_MOBILE = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent) || ('ontouchstart' in window && window.innerWidth < 1024);
+if(IS_MOBILE){
+  setTimeout(function(){
+    var els = document.querySelectorAll('[filter]');
+    for(var i=0;i<els.length;i++){ els[i].removeAttribute('filter'); }
+    var grain = document.querySelector('#grain-rect');
+    if(grain){ grain.setAttribute('opacity','0.03'); }
+  }, 10);
+}
 var DIMS = {
   jing:{name:'山径 · 方向', note:'入山先走径。正在走的路，和想走的路。'},
   wu:{name:'云雾 · 情绪', note:'半山遇雾。会来，也会散的东西。'},
