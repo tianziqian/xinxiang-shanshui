@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>心象山水</title>
+<style>
+  :root{
+    --paper:#f5f1e6; --paper-dim:#ece7da; --ink:#2f3734; --ink-soft:#4a5350;
+    --ink-mist:#7a827c; --seal:#a63d2a; --line:#d8d2c0;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{background:var(--paper-dim);}
+  body{
+    font-family:"Kaiti SC","KaiTi","STKaiti","FangSong","Songti SC",serif;
+    color:var(--ink); min-height:100vh; padding:28px 16px 60px;
+    display:flex; flex-direction:column; align-items:center;
+  }
+  .wrap{width:100%; max-width:940px;}
+  .paper{
+    background:var(--paper); border:1px solid var(--line); border-radius:6px;
+    box-shadow:0 2px 14px rgba(60,55,40,.08); overflow:hidden;
+    opacity:0; transition:opacity 1.6s ease;
+  }
+  .paper.shown{opacity:1;}
+  svg{display:block; width:100%; height:auto;}
+
+  .panel{margin-top:22px; text-align:center; min-height:230px;}
+  .fade{transition:opacity .5s ease;}
+  .fade.out{opacity:0;}
+
+  h1.title{font-size:34px; font-weight:normal; letter-spacing:.35em; text-indent:.35em; margin-bottom:10px;}
+  .sub{color:var(--ink-soft); font-size:16px; letter-spacing:.12em; margin-bottom:6px;}
+  .hint{color:var(--ink-mist); font-size:13px; letter-spacing:.06em; line-height:1.9; margin:14px auto; max-width:520px;}
+
+  .crumb{color:var(--ink-mist); font-size:13px; letter-spacing:.2em; margin-bottom:8px;}
+  .dim-name{font-size:20px; letter-spacing:.25em; text-indent:.25em; margin-bottom:4px;}
+  .dim-note{color:var(--ink-mist); font-size:13px; letter-spacing:.08em; margin-bottom:16px;}
+  .question{font-size:21px; line-height:1.9; max-width:600px; margin:0 auto 18px;}
+
+  textarea, input[type=text]{
+    font-family:inherit; font-size:16px; color:var(--ink);
+    background:rgba(255,255,255,.45); border:1px solid var(--line); border-radius:4px;
+    padding:12px 14px; width:100%; max-width:560px; outline:none; line-height:1.8;
+  }
+  textarea{min-height:96px; resize:vertical;}
+  textarea:focus, input[type=text]:focus{border-color:var(--ink-mist);}
+  input[type=text]{max-width:260px; text-align:center; letter-spacing:.15em;}
+
+  .btns{margin-top:18px; display:flex; gap:14px; justify-content:center; flex-wrap:wrap;}
+  button{
+    font-family:inherit; font-size:15px; letter-spacing:.25em; text-indent:.25em;
+    padding:9px 26px; cursor:pointer; border-radius:3px;
+    border:1px solid var(--ink-soft); background:transparent; color:var(--ink-soft);
+    transition:all .25s ease;
+  }
+  button:hover{background:var(--ink-soft); color:var(--paper);}
+  button.primary{background:var(--ink); color:var(--paper); border-color:var(--ink);}
+  button.primary:hover{background:var(--ink-soft);}
+  button.quiet{border:none; font-size:13px; color:var(--ink-mist); letter-spacing:.1em; padding:9px 10px;}
+  button.quiet:hover{background:transparent; color:var(--ink);}
+
+  .warn{color:var(--seal); font-size:13px; letter-spacing:.1em; margin-top:10px; min-height:18px;}
+  .save-note{color:var(--ink-mist); font-size:12px; margin-top:14px; letter-spacing:.1em;}
+
+  .zhi{
+    text-align:left; max-width:620px; margin:8px auto 0; font-size:16.5px; line-height:2.15;
+    letter-spacing:.05em; color:var(--ink); white-space:pre-wrap;
+  }
+  .zhi .q-echo{color:var(--ink-mist);}
+  .end-title{font-size:24px; letter-spacing:.4em; text-indent:.4em; margin-bottom:14px;}
+
+  .dim-g{transition:opacity 2.2s ease;}
+  .st0{opacity:.22;} .st1{opacity:.58;} .st2{opacity:1;}
+  .detail{opacity:0; transition:opacity 2.2s ease;}
+  .st1 .detail{opacity:0.7;}
+  .st2 .detail{opacity:1;}
+  .rich{opacity:0; transition:opacity 2.2s ease;}
+  .rich.shown{opacity:1;}
+  .endmark{opacity:0; transition:opacity 2.4s ease;}
+  .endmark.shown{opacity:1;}
+  @keyframes bloom{from{filter:blur(6px);}to{filter:blur(0);}}
+  .bloom{animation:bloom 2.4s ease;}
+  @keyframes drift{from{transform:translateX(-13px);}to{transform:translateX(13px);}}
+  @keyframes drift2{from{transform:translateX(10px);}to{transform:translateX(-10px);}}
+  .drift1{animation:drift 26s ease-in-out infinite alternate;}
+  .drift2{animation:drift2 34s ease-in-out infinite alternate;}
+  @media (max-width:600px){
+    h1.title{font-size:26px;}
+    .question{font-size:18px;}
+    body{padding:14px 8px 40px;}
+    .st0{opacity:0.35;}
+    svg{min-height:280px;}
+    .paper{min-height:280px;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="paper" id="paper">
+  <svg id="scene" viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="心象山水画卷">
+    <defs>
+      <filter id="brush" x="-5%" y="-5%" width="110%" height="110%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.012 0.05" numOctaves="3" seed="7" result="w"/>
+        <feDisplacementMap in="SourceGraphic" in2="w" scale="2.2" xChannelSelector="R" yChannelSelector="G"/>
+      </filter>
+      <filter id="grain">
+        <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="3" result="n"/>
+        <feColorMatrix in="n" type="matrix" values="0 0 0 0 0.42  0 0 0 0 0.40  0 0 0 0 0.34  0 0 0 0.05 0"/>
+      </filter>
+    </defs>
+    <rect x="0" y="0" width="900" height="520" fill="#f5f1e6"/>
+    <rect id="grain-rect" x="0" y="0" width="900" height="520" filter="url(#grain)"/>
+
+    <g id="g-shan" class="dim-g st0" filter="url(#brush)">
+      <path d="M455 240 C490 200 525 168 565 164 C605 160 625 190 660 198 C685 203 700 178 725 172 C755 165 775 185 805 190 C835 195 860 178 900 200 L900 240 Z" fill="#c0cbc4"/>
+      <path d="M340 300 C380 268 410 250 450 252 C485 254 505 234 540 236 C570 238 592 256 625 258 C655 260 680 244 715 248 L715 300 Z" fill="#a3b3a8" opacity=".85"/>
+      <path d="M30 330 C80 310 120 200 165 128 C190 86 215 80 238 116 C278 178 315 255 395 318 L395 330 Z" fill="#8ba095"/>
+      <path d="M150 165 C178 120 200 116 218 148 C236 180 256 216 288 260 C246 236 196 216 150 165 Z" fill="#6f857c"/>
+      <path d="M18 340 C22 320 34 312 48 316 C58 308 72 310 78 322 C88 320 96 330 92 342 C96 352 88 362 74 360 C62 366 46 364 40 354 C28 358 16 352 18 340 Z" fill="#7f9186"/>
+      <path d="M60 300 C66 288 78 286 84 296 C92 292 100 300 96 310 C90 316 78 316 72 310 C62 314 56 308 60 300 Z" fill="#94a599" opacity=".9"/>
+      <g class="detail">
+        <path d="M520 205 C555 182 585 168 620 170 C650 172 672 156 704 152 C734 148 758 162 792 166 C822 170 846 160 872 168" fill="none" stroke="#cfd8d2" stroke-width="9" opacity=".7"/>
+        <path d="M178 202 q14 20 30 36" stroke="#55645d" stroke-width="1.2" fill="none" opacity=".65"/>
+        <path d="M158 226 q18 24 40 42" stroke="#55645d" stroke-width="1.2" fill="none" opacity=".6"/>
+        <path d="M206 172 q10 18 24 34" stroke="#55645d" stroke-width="1.2" fill="none" opacity=".65"/>
+        <path d="M236 210 q12 20 28 36" stroke="#55645d" stroke-width="1" fill="none" opacity=".5"/>
+        <path d="M120 260 q16 22 34 40" stroke="#4e5c56" stroke-width="1.1" fill="none" opacity=".55"/>
+        <path d="M95 288 q20 20 42 34" stroke="#4e5c56" stroke-width="1" fill="none" opacity=".5"/>
+        <path d="M260 190 q10 16 22 30" stroke="#55645d" stroke-width="1" fill="none" opacity=".5"/>
+        <path d="M60 316 q18 14 36 24" stroke="#4e5c56" stroke-width="1" fill="none" opacity=".45"/>
+        <path d="M30 336 q10 -14 26 -18" stroke="#4e5c56" stroke-width="1" fill="none" opacity=".55"/>
+        <path d="M62 348 q12 -10 24 -14" stroke="#4e5c56" stroke-width="1" fill="none" opacity=".5"/>
+        <circle cx="180" cy="140" r="2.2" fill="#39423e" opacity=".6"/>
+        <circle cx="196" cy="150" r="1.8" fill="#39423e" opacity=".55"/>
+        <circle cx="168" cy="156" r="1.6" fill="#39423e" opacity=".5"/>
+        <circle cx="222" cy="168" r="2" fill="#39423e" opacity=".55"/>
+        <circle cx="44" cy="326" r="1.8" fill="#39423e" opacity=".5"/>
+        <circle cx="66" cy="316" r="1.6" fill="#39423e" opacity=".5"/>
+      </g>
+      <g class="rich">
+        <path d="M470 150 C520 118 560 100 600 104 C630 107 650 92 685 88 C715 85 740 100 775 102 C805 104 830 96 875 112" stroke="#d5dcd7" stroke-width="6" fill="none" opacity=".65"/>
+        <path d="M600 130 C640 112 670 102 705 106 C735 109 758 98 790 102" stroke="#e3e7e1" stroke-width="5" fill="none" opacity=".55"/>
+        <circle cx="560" cy="112" r="1.8" fill="#5f6f66" opacity=".5"/>
+        <circle cx="600" cy="106" r="1.6" fill="#5f6f66" opacity=".45"/>
+      </g>
+    </g>
+
+    <g id="g-wu" class="dim-g st0">
+      <ellipse class="drift1" cx="170" cy="290" rx="170" ry="26" fill="#f5f1e6" opacity=".92"/>
+      <ellipse class="drift2" cx="450" cy="268" rx="190" ry="24" fill="#f5f1e6" opacity=".9"/>
+      <ellipse class="drift1" cx="730" cy="292" rx="160" ry="26" fill="#f5f1e6" opacity=".92"/>
+      <g class="drift1">
+        <path d="M30 300 Q100 280 180 288 T340 282" stroke="#a4b0a8" stroke-width="1.5" fill="none"/>
+        <path d="M70 312 Q130 300 200 304 T320 300" stroke="#b6c0b8" stroke-width="1.2" fill="none"/>
+        <path d="M10 288 Q60 274 120 278 T230 272" stroke="#b6c0b8" stroke-width="1" fill="none" opacity=".8"/>
+      </g>
+      <g class="drift2">
+        <path d="M300 278 Q380 260 460 268 T610 262" stroke="#a4b0a8" stroke-width="1.5" fill="none"/>
+        <path d="M350 290 Q410 280 480 284 T590 280" stroke="#b6c0b8" stroke-width="1.2" fill="none"/>
+        <path d="M320 258 Q390 244 450 250 T560 246" stroke="#b6c0b8" stroke-width="1" fill="none" opacity=".8"/>
+      </g>
+      <g class="drift1">
+        <path d="M600 302 Q670 286 740 292 T870 288" stroke="#a4b0a8" stroke-width="1.5" fill="none"/>
+        <path d="M640 316 Q700 304 760 308 T880 304" stroke="#b6c0b8" stroke-width="1.1" fill="none" opacity=".8"/>
+      </g>
+      <g class="detail">
+        <ellipse class="drift2" cx="400" cy="330" rx="240" ry="18" fill="#f5f1e6" opacity=".75"/>
+        <ellipse class="drift1" cx="620" cy="250" rx="130" ry="16" fill="#f5f1e6" opacity=".7"/>
+        <path class="drift2" d="M200 340 Q300 322 400 330 T580 326" stroke="#aeb9b1" stroke-width="1.4" fill="none"/>
+        <path class="drift1" d="M530 258 Q590 246 650 252 T760 248" stroke="#b6c0b8" stroke-width="1.2" fill="none"/>
+        <path class="drift2" d="M80 330 Q160 316 240 322 T400 318" stroke="#b6c0b8" stroke-width="1" fill="none" opacity=".75"/>
+      </g>
+      <g class="rich">
+        <ellipse class="drift2" cx="300" cy="305" rx="210" ry="18" fill="#f5f1e6" opacity=".8"/>
+        <path class="drift2" d="M120 316 Q220 300 320 306 T500 302" stroke="#aeb9b1" stroke-width="1.4" fill="none"/>
+        <path class="drift1" d="M660 268 Q720 254 780 260 T880 256" stroke="#aeb9b1" stroke-width="1.2" fill="none" opacity=".8"/>
+      </g>
+    </g>
+
+    <g id="g-shui" class="dim-g st0" filter="url(#brush)">
+      <path d="M470 430 Q560 422 640 430 T860 428" stroke="#8aa098" stroke-width="1.8" fill="none"/>
+      <path d="M500 452 Q590 444 668 452 T880 450" stroke="#8aa098" stroke-width="1.8" fill="none"/>
+      <path d="M480 474 Q560 468 640 474 T800 472" stroke="#8aa098" stroke-width="1.8" fill="none"/>
+      <path d="M420 410 Q490 402 556 408 T690 406" stroke="#94a59a" stroke-width="1.3" fill="none" opacity=".8"/>
+      <path d="M300 402 C306 388 320 384 330 392 C340 386 352 392 350 404 C358 410 352 420 340 420 C332 428 316 426 312 416 C300 418 294 410 300 402 Z" fill="#7f9186"/>
+      <g class="detail">
+        <path d="M330 300 C332 320 328 340 336 360" stroke="#a9bcb4" stroke-width="2.4" fill="none"/>
+        <path d="M338 302 C340 322 336 342 344 362" stroke="#a9bcb4" stroke-width="1.4" fill="none"/>
+        <circle cx="336" cy="368" r="1.6" fill="#a9bcb4"/><circle cx="344" cy="372" r="1.3" fill="#a9bcb4"/><circle cx="329" cy="371" r="1.2" fill="#a9bcb4"/>
+        <path d="M520 410 Q580 404 636 410 T760 408" stroke="#8aa098" stroke-width="1.4" fill="none"/>
+        <path d="M308 398 q8 -8 18 -10" stroke="#4e5c56" stroke-width=".9" fill="none" opacity=".5"/>
+        <path d="M322 412 q10 -6 20 -6" stroke="#4e5c56" stroke-width=".9" fill="none" opacity=".5"/>
+        <path d="M292 356 C294 374 290 392 296 408" stroke="#a9bcb4" stroke-width="1.6" fill="none"/>
+        <circle cx="296" cy="412" r="1.3" fill="#a9bcb4"/>
+      </g>
+      <g class="rich">
+        <path d="M470 496 Q550 490 620 496 T780 494" stroke="#8aa098" stroke-width="1.4" fill="none"/>
+        <path d="M666 470 q2 -14 -2 -24 M672 470 q3 -12 0 -22" stroke="#6f857c" stroke-width="1.2" fill="none"/>
+        <path d="M760 440 q10 -16 24 -10 q-4 10 -14 12 q-6 4 -10 -2 Z" fill="#55645d" opacity=".7"/>
+        <circle cx="792" cy="446" r="1.4" fill="#8aa098"/><circle cx="800" cy="450" r="1.1" fill="#8aa098"/>
+      </g>
+    </g>
+
+    <g id="g-jing" class="dim-g st0" filter="url(#brush)">
+      <path d="M95 505 C160 470 150 448 200 428 C255 405 240 390 295 368 C325 356 335 348 350 340" stroke="#6b756f" stroke-width="2.5" fill="none" stroke-dasharray="2 9" stroke-linecap="round"/>
+      <circle cx="130" cy="486" r="1.4" fill="#55645d" opacity=".7"/>
+      <circle cx="175" cy="452" r="1.4" fill="#55645d" opacity=".7"/>
+      <circle cx="222" cy="418" r="1.4" fill="#55645d" opacity=".7"/>
+      <circle cx="268" cy="386" r="1.4" fill="#55645d" opacity=".7"/>
+      <g class="detail">
+        <path d="M350 340 C368 330 372 322 388 314" stroke="#6b756f" stroke-width="2.5" fill="none" stroke-dasharray="2 9" stroke-linecap="round"/>
+        <circle cx="310" cy="360" r="1.6" fill="#55645d"/><circle cx="322" cy="353" r="1.6" fill="#55645d"/><circle cx="334" cy="347" r="1.6" fill="#55645d"/>
+        <line x1="272" y1="384" x2="300" y2="372" stroke="#4a5350" stroke-width="3" stroke-linecap="round"/>
+        <line x1="270" y1="390" x2="298" y2="378" stroke="#4a5350" stroke-width="1.4" opacity=".8"/>
+      </g>
+      <g class="rich">
+        <path d="M388 314 C402 306 406 298 420 290" stroke="#6b756f" stroke-width="2.5" fill="none" stroke-dasharray="2 9" stroke-linecap="round"/>
+        <circle cx="396" cy="310" r="1.6" fill="#55645d"/><circle cx="408" cy="302" r="1.6" fill="#55645d"/>
+        <path d="M420 290 C438 280 452 268 466 252" stroke="#8a938c" stroke-width="1.6" fill="none" stroke-dasharray="1 8" opacity=".7"/>
+      </g>
+    </g>
+
+    <g id="g-decor" opacity=".55" filter="url(#brush)">
+      <path d="M120 506 C118 486 126 468 116 450 C110 438 118 424 130 418" stroke="#4a5350" stroke-width="3.2" fill="none"/>
+      <path d="M130 418 C136 410 132 400 140 392" stroke="#4a5350" stroke-width="2.2" fill="none"/>
+      <path d="M116 450 l-16 -8 M116 450 l-18 -2 M116 450 l-16 5 M116 450 l-12 10" stroke="#3f4a44" stroke-width="1.2" fill="none"/>
+      <path d="M126 468 l16 -9 M126 468 l19 -3 M126 468 l17 6 M126 468 l12 11" stroke="#3f4a44" stroke-width="1.2" fill="none"/>
+      <path d="M130 418 l-15 -7 M130 418 l-17 -1 M130 418 l-14 8" stroke="#3f4a44" stroke-width="1.1" fill="none"/>
+      <path d="M140 392 l-13 -8 M140 392 l-15 -1 M140 392 l4 -14 M140 392 l12 -6" stroke="#3f4a44" stroke-width="1" fill="none"/>
+      <path d="M96 508 C99 498 110 495 116 501 C124 497 132 503 128 511 L96 511 Z" fill="#7f9186" opacity=".85"/>
+      <path d="M64 508 C64 492 62 478 66 462" stroke="#4a5350" stroke-width="1.6" fill="none"/>
+      <path d="M66 462 l-8 -5 M66 470 l9 4 M66 480 l-8 -4 M66 490 l9 5" stroke="#4a5350" stroke-width="1" fill="none"/>
+    </g>
+
+    <g id="g-ting" class="dim-g st0" filter="url(#brush)">
+      <path d="M336 356 Q378 344 420 356" stroke="#55645d" stroke-width="2" fill="none"/>
+      <path d="M350 358 L346 366 M362 359 L358 367 M398 359 L402 367 M410 358 L414 366" stroke="#6b756f" stroke-width="1.3" fill="none" opacity=".7"/>
+      <path d="M348 332 Q378 312 408 332" stroke="#39423e" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+      <path d="M348 332 q-8 4 -10 12" stroke="#39423e" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+      <path d="M408 332 q8 4 10 12" stroke="#39423e" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+      <circle cx="378" cy="310" r="1.8" fill="#39423e"/>
+      <line x1="378" y1="312" x2="378" y2="323" stroke="#39423e" stroke-width="2"/>
+      <line x1="360" y1="332" x2="360" y2="350" stroke="#39423e" stroke-width="2"/>
+      <line x1="396" y1="332" x2="396" y2="350" stroke="#39423e" stroke-width="2"/>
+      <line x1="355" y1="351" x2="401" y2="351" stroke="#39423e" stroke-width="3"/>
+      <path d="M360 344 L360 351 M368 344 L368 351 M388 344 L388 351 M396 344 L396 351" stroke="#55645d" stroke-width="1.1" opacity=".75"/>
+      <line x1="360" y1="344" x2="396" y2="344" stroke="#55645d" stroke-width="1.2" opacity=".75"/>
+      <g class="detail">
+        <path d="M424 352 q4 -14 -2 -28" stroke="#4a5350" stroke-width="2" fill="none"/>
+        <circle cx="420" cy="318" r="9" fill="#6f857c" opacity=".85"/>
+        <circle cx="429" cy="324" r="6.5" fill="#6f857c" opacity=".7"/>
+        <path d="M336 362 C339 356 346 355 348 360 C352 358 356 363 352 367 L336 367 Z" fill="#7f9186" opacity=".8"/>
+      </g>
+      <g class="rich">
+        <line x1="346" y1="312" x2="346" y2="333" stroke="#39423e" stroke-width="1.4"/>
+        <path d="M346 313 C338 316 332 322 330 332" stroke="#39423e" stroke-width="1" fill="none" opacity=".8"/>
+        <path d="M346 316 C340 320 336 328 334 340" stroke="#39423e" stroke-width=".9" fill="none" opacity=".7"/>
+        <path d="M346 313 C354 316 360 322 362 332" stroke="#39423e" stroke-width="1" fill="none" opacity=".8"/>
+        <path d="M346 316 C352 320 356 328 358 340" stroke="#39423e" stroke-width=".9" fill="none" opacity=".7"/>
+        <path d="M346 310 q-11 2 -17 0 l0 7 q9 3 17 0 z" fill="#a63d2a" opacity=".85"/>
+      </g>
+    </g>
+
+    <g id="g-ren" class="dim-g st0" filter="url(#brush)">
+      <circle cx="205" cy="402" r="3" fill="#2f3734"/>
+      <path d="M205 405 C202 412 210 416 206 424 C214 430 198 436 204 444" stroke="#2f3734" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+      <path d="M204 444 L198 452" stroke="#2f3734" stroke-width="1.7" fill="none"/>
+      <path d="M204 444 L211 452" stroke="#2f3734" stroke-width="1.7" fill="none"/>
+      <line x1="213" y1="410" x2="217" y2="450" stroke="#2f3734" stroke-width="1.2"/>
+      <path d="M198 414 q-10 4 -14 12" stroke="#2f3734" stroke-width="1" fill="none" opacity=".8"/>
+      <g class="detail">
+        <path d="M494 92 q5 -6 10 0 M504 92 q5 -6 10 0" stroke="#39423e" stroke-width="1.5" fill="none"/>
+        <path d="M530 104 q4 -5 8 0 M538 104 q4 -5 8 0" stroke="#39423e" stroke-width="1.2" fill="none"/>
+        <path d="M470 100 q4 -5 8 0" stroke="#39423e" stroke-width="1.1" fill="none" opacity=".85"/>
+      </g>
+      <g class="rich">
+        <path d="M560 76 q4 -5 8 0 M568 76 q4 -5 8 0 M577 79 q4 -5 8 0" stroke="#39423e" stroke-width="1.2" fill="none"/>
+        <path d="M548 88 q4 -5 8 0 M600 92 q4 -5 8 0" stroke="#39423e" stroke-width="1" fill="none" opacity=".8"/>
+      </g>
+    </g>
+
+    <g id="g-zhou" class="dim-g st0" filter="url(#brush)">
+      <path d="M592 414 Q620 428 648 414 Q620 420 592 414 Z" fill="#39423e"/>
+      <line x1="612" y1="405" x2="612" y2="382" stroke="#39423e" stroke-width="1.6"/>
+      <path d="M612 384 L636 396 L612 402 Z" fill="#7f9186" opacity=".85"/>
+      <circle cx="600" cy="406" r="2.2" fill="#2f3734"/>
+      <line x1="600" y1="408" x2="600" y2="413" stroke="#2f3734" stroke-width="1.4"/>
+      <line x1="621" y1="410" x2="632" y2="424" stroke="#39423e" stroke-width="1.1"/>
+      <path d="M578 420 q14 6 28 0" stroke="#8aa098" stroke-width="1" fill="none" opacity=".7"/>
+      <path d="M646 420 q14 6 28 0" stroke="#8aa098" stroke-width="1" fill="none" opacity=".7"/>
+      <g class="detail">
+        <path d="M585 432 q35 7 70 0" stroke="#8aa098" stroke-width="1.2" fill="none"/>
+        <circle cx="640" cy="405" r="2.2" fill="#a63d2a"/>
+      </g>
+      <g class="rich">
+        <path d="M830 416 q34 5 66 1" stroke="#8aa098" stroke-width="1.2" fill="none"/>
+        <path d="M844 402 L861 391 L878 402" stroke="#55645d" stroke-width="1.4" fill="none"/>
+        <line x1="848" y1="402" x2="848" y2="412" stroke="#55645d" stroke-width="1.3"/>
+        <line x1="874" y1="402" x2="874" y2="412" stroke="#55645d" stroke-width="1.3"/>
+        <line x1="843" y1="413" x2="879" y2="413" stroke="#55645d" stroke-width="1.3"/>
+        <path d="M818 412 C816 400 820 392 816 384" stroke="#39423e" stroke-width="1.4" fill="none"/>
+        <path d="M816 390 l-9 -5 M816 396 l10 4 M816 384 l-8 -3" stroke="#39423e" stroke-width="1" fill="none"/>
+      </g>
+    </g>
+
+    <g id="g-tiba" class="endmark">
+      <text x="52" y="42" font-size="17" fill="#4a5350" style="writing-mode:vertical-rl; letter-spacing:6px;">心象山水</text>
+      <text x="80" y="46" font-size="12" fill="#7a827c" style="writing-mode:vertical-rl; letter-spacing:4px;" id="tiba-line"></text>
+    </g>
+    <g id="g-seal" class="endmark">
+      <rect x="836" y="28" width="36" height="36" rx="3" fill="#a63d2a"/>
+      <text x="854" y="52" font-size="15" fill="#f5f1e6" text-anchor="middle" id="seal-text">心</text>
+    </g>
+  </svg>
+  </div>
+
+  <div class="panel fade" id="panel"></div>
+
+</div>
+
+<script>
+var IS_MOBILE = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent) || ('ontouchstart' in window && window.innerWidth < 1024);
+if(IS_MOBILE){
+  setTimeout(function(){
+    var els = document.querySelectorAll('[filter]');
+    for(var i=0;i<els.length;i++){ els[i].removeAttribute('filter'); }
+    var grain = document.querySelector('#grain-rect');
+    if(grain){ grain.setAttribute('opacity','0.03'); }
+  }, 10);
+}
+var DIMS = {
+  jing:{name:'山径 · 方向', note:'入山先走径。正在走的路，和想走的路。'},
+  wu:{name:'云雾 · 情绪', note:'半山遇雾。会来，也会散的东西。'},
+  shui:{name:'水 · 能量', note:'林间听水。什么滋养你，什么耗竭你。'},
+  shan:{name:'远山 · 定', note:'登高望山。画里最不动的部分。'},
+  ting:{name:'亭 · 空', note:'亭中小歇。放下，与留白。'},
+  ren:{name:'行人 · 身体与爆发', note:'认出走路的人。静水之下有火。'},
+  zhou:{name:'舟 · 同行者', note:'下山渡水。关系与共鸣。'}
+};
+
+var Q = [
+  {dim:'jing', q:'你现在走在一条什么样的路上？用你自己的话，描述一下它。'},
+  {dim:'jing', q:'如果不需要向任何人证明什么，这条路，你想让它通向哪里？'},
+  {dim:'wu', q:'最近一次心绪不宁，是什么时候？如果它是一种天气，它像什么？'},
+  {dim:'wu', q:'如果这团雾会说话，它在替你说出内心哪一句真话？'},
+  {dim:'shui', q:'这个月，哪一刻你忘了时间？'},
+  {dim:'shui', q:'又是哪一刻，你只想逃走？'},
+  {dim:'shan', q:'把所有身份都拿走——工作、成绩、别人的评价——剩下的你，还相信什么？'},
+  {dim:'shan', q:'有什么东西，是你这些年从来没有变过的？'},
+  {dim:'ting', q:'此刻，可以先放下的一件事，是什么？'},
+  {dim:'ting', q:'你上一次真正的休息，是什么样子的？'},
+  {dim:'ren', q:'你的身体最近想告诉你什么？'},
+  {dim:'ren', q:'你身体里有一股平时不轻易示人的力量吗？它在什么时候出来过？'},
+  {dim:'zhou', q:'谁在的时候，你最像你自己？'},
+  {dim:'zhou', q:'你希望未来同船的人，身上有什么？'}
+];
+
+var ZHI_LINES = {
+  jing:'问路，你答：「{a}」。路不必直，山水画里能走通的路，都是绕出来的。',
+  wu:'问雾，你答：「{a}」。雾起时记得：雾是天气，不是山。',
+  shui:'问水，你答：「{a}」。水自会往滋养你的方向流，不必逆着推它。',
+  shan:'问山，你答：「{a}」。此为你之远山，风吹不动。',
+  ting:'问亭，你答：「{a}」。画要留白才透气，日子也是。',
+  ren:'问身，你答：「{a}」。静水之下有火，不必藏尽。',
+  zhou:'问舟，你答：「{a}」。同船者不须多，共渡即可。'
+};
+
+var KEY = 'xinxiang-v1';
+var S = load() || {hao:'', pending:null, skipped:[], answers:{}, phase:'start'};
+
+function load(){
+  try{ var raw = localStorage.getItem(KEY); return raw ? JSON.parse(raw) : null; }
+  catch(e){ return null; }
+}
+function save(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }
+
+function stageOf(dim){
+  var n = 0;
+  for(var i=0;i<Q.length;i++){ if(Q[i].dim===dim && S.answers[i]) n++; }
+  return Math.min(n,2);
+}
+function richLen(dim){
+  var n = 0;
+  for(var i=0;i<Q.length;i++){ if(Q[i].dim===dim && S.answers[i]) n += S.answers[i].length; }
+  return n;
+}
+
+var RICH_AT = 8;
+function inkOpacity(d){
+  var st = stageOf(d);
+  if(st===0) return 0.22;
+  var f = Math.min(1, richLen(d)/20);
+  return Math.min(1, 0.68 + 0.27*f + (st===2 ? 0.10 : 0));
+}
+var prevStages = null, prevRich = {};
+function paint(){
+  var first = !prevStages;
+  if(first){ prevStages = {}; }
+  for(var d in DIMS){
+    var st = stageOf(d);
+    var g = document.getElementById('g-'+d);
+    var was = first ? st : prevStages[d];
+    g.setAttribute('class','dim-g st'+st + (st>was ? ' bloom' : ''));
+    g.style.opacity = st===0 ? '' : String(inkOpacity(d));
+    if(st>was){
+      (function(gg){ setTimeout(function(){ gg.classList.remove('bloom'); }, 2000); })(g);
+      if(st>=1) drawOn(g);
+    }
+    prevStages[d] = st;
+    var rg = g.querySelector('.rich');
+    if(rg){
+      var rich = st===2 || (st>0 && richLen(d)>=RICH_AT);
+      rg.setAttribute('class','rich' + (rich ? ' shown' : ''));
+      if(rich && !prevRich[d] && !first) drawOn(rg, 'path, line');
+      prevRich[d] = rich;
+    }
+  }
+}
+
+function drawOn(g, sel){
+  var els = g.querySelectorAll(sel || '.detail path, .detail line');
+  for(var i=0;i<els.length;i++){
+    (function(el){
+      if(el.getAttribute('stroke-dasharray')) return;
+      if(!el.getTotalLength) return;
+      var L; try{ L = el.getTotalLength(); }catch(e){ return; }
+      if(!L) return;
+      el.style.transition = 'none';
+      el.style.strokeDasharray = L + ' ' + L;
+      el.style.strokeDashoffset = L;
+      el.getBoundingClientRect();
+      el.style.transition = 'stroke-dashoffset 1.8s ease';
+      el.style.strokeDashoffset = '0';
+      setTimeout(function(){
+        el.style.transition = ''; el.style.strokeDasharray = ''; el.style.strokeDashoffset = '';
+      }, 2100);
+    })(els[i]);
+  }
+}
+
+var INK_POINT = {jing:[240,405], wu:[450,270], shui:[650,450], shan:[210,190], ting:[378,336], ren:[205,412], zhou:[620,414]};
+function inkDrop(dim){
+  var svg = document.getElementById('scene');
+  var p = INK_POINT[dim]; if(!p) return;
+  var c = document.createElementNS('http://www.w3.org/2000/svg','circle');
+  c.setAttribute('cx',p[0]); c.setAttribute('cy',p[1]); c.setAttribute('r','2');
+  c.setAttribute('fill','none'); c.setAttribute('stroke','#39423e');
+  c.setAttribute('stroke-width','1.5'); c.setAttribute('opacity','0.5');
+  svg.appendChild(c);
+  var t0 = null;
+  function tick(ts){
+    if(t0===null) t0 = ts;
+    var k = (ts - t0) / 900;
+    if(k >= 1){ svg.removeChild(c); return; }
+    c.setAttribute('r', String(2 + k*26));
+    c.setAttribute('opacity', String(0.5*(1-k)));
+    requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+}
+function answeredCount(){ var n=0; for(var k in S.answers) n++; return n; }
+function hasProgress(){
+  return answeredCount()>0 || (S.pending && S.pending.length>0 && S.pending.length<Q.length) || S.skipped.length>0;
+}
+
+var panel = document.getElementById('panel');
+function show(html){
+  panel.classList.add('out');
+  setTimeout(function(){ panel.innerHTML = html; panel.classList.remove('out'); }, 320);
+}
+
+function esc(s){
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function renderStart(){
+  S.phase = 'start'; save();
+  show(
+    '<h1 class="title">心象山水</h1>' +
+    '<p class="sub">一次纸上的徒步——以问作杖，以答为墨</p>' +
+    '<p class="hint">整卷共十四问，皆可略过。每答一问，画上便着一次墨：' +
+    '山是你的信念，雾是你的情绪，水是你的能量，径是你的方向，亭是你的空，行人是你的身体，舟是你的同行者。' +
+    '墨随言深——你在哪一处写得越多，那一处的山水便越深。答案只存在你自己的浏览器里，不会被上传。</p>' +
+    '<div><input type="text" id="hao" maxlength="4" placeholder="给自己起个号，将刻作印" value="' + esc(S.hao) + '"></div>' +
+    '<div class="btns"><button class="primary" onclick="begin()">入 山</button>' +
+    (hasProgress() ? '<button onclick="resume()">续 画</button>' : '') +
+    '</div>'
+  );
+}
+
+function begin(){
+  if(hasProgress() && !confirm('重新入山会抹去上一卷的笔墨。要续画请选「续画」，确定重新开始吗？')) return;
+  var hao = document.getElementById('hao').value.trim();
+  S.hao = hao || '无名';
+  S.pending = []; S.skipped = []; S.answers = {};
+  for(var i=0;i<Q.length;i++) S.pending.push(i);
+  S.phase = 'walk'; save(); paint();
+  step();
+}
+function resume(){
+  var hao = document.getElementById('hao');
+  if(hao && hao.value.trim()) S.hao = hao.value.trim();
+  if(!S.pending || (S.pending.length===0 && S.skipped.length===0)){ finish(); return; }
+  if(S.pending.length===0){ S.pending = S.skipped; S.skipped = []; }
+  S.phase='walk'; save(); step();
+}
+
+function step(){
+  if(!S.pending || S.pending.length===0){ finish(); return; }
+  var i = S.pending[0];
+  var item = Q[i];
+  var dim = DIMS[item.dim];
+  show(
+    '<p class="crumb">第 ' + (i+1) + ' 问 · 共 ' + Q.length + ' 问</p>' +
+    '<p class="dim-name">' + dim.name + '</p>' +
+    '<p class="dim-note">' + dim.note + '</p>' +
+    '<p class="question">' + esc(item.q) + '</p>' +
+    '<textarea id="ans" placeholder="随手写，不必成文……"></textarea>' +
+    '<p class="warn" id="warn"></p>' +
+    '<div class="btns">' +
+    '<button class="primary" onclick="inkDown(' + i + ')">落 笔</button>' +
+    '<button onclick="skip(' + i + ')">此问略过</button>' +
+    '<button class="quiet" onclick="renderStart()">下山歇息</button>' +
+    '</div>' +
+    '<p class="save-note">进度自动保存，随时可回来续画</p>'
+  );
+  setTimeout(function(){ var t=document.getElementById('ans'); if(t) t.focus(); }, 700);
+}
+
+function inkDown(i){
+  var t = document.getElementById('ans');
+  var v = t ? t.value.trim() : '';
+  if(!v){
+    document.getElementById('warn').textContent = '落笔需着墨——写一点什么，或选择略过。';
+    return;
+  }
+  S.answers[i] = v;
+  S.pending.shift();
+  save(); inkDrop(Q[i].dim); paint();
+  step();
+}
+function skip(i){
+  S.skipped.push(i);
+  S.pending.shift();
+  save();
+  step();
+}
+
+function ganzhi(){
+  var y = new Date().getFullYear();
+  var tg = '甲乙丙丁戊己庚辛壬癸', dz = '子丑寅卯辰巳午未申酉戌亥';
+  return tg[(y-4)%10] + dz[(y-4)%12];
+}
+function seasonWord(){
+  var m = new Date().getMonth()+1;
+  if(m>=3&&m<=5) return '春'; if(m>=6&&m<=8) return '夏';
+  if(m>=9&&m<=11) return '秋'; return '冬';
+}
+
+function truncate(s, n){
+  s = s.replace(/\s+/g,' ');
+  return s.length > n ? s.slice(0,n) + '……' : s;
+}
+
+function buildZhi(){
+  var order = ['jing','wu','shui','shan','ting','ren','zhou'];
+  var lines = [];
+  lines.push(ganzhi() + '年' + seasonWord() + '，' + S.hao + '以十四问入山，得此卷。');
+  lines.push('');
+  for(var d=0; d<order.length; d++){
+    var dim = order[d];
+    var first = null;
+    for(var i=0;i<Q.length;i++){
+      if(Q[i].dim===dim && S.answers[i]){ first = S.answers[i]; break; }
+    }
+    if(first){
+      lines.push(ZHI_LINES[dim].replace('{a}', truncate(first, 56)));
+    }
+  }
+  lines.push('');
+  lines.push('山水不在远处，行走即是抵达。');
+  return lines.join('\n');
+}
+
+function finish(){
+  S.phase = 'done'; save(); paint();
+  var sealChar = S.hao ? S.hao.slice(0,2) : '心';
+  document.getElementById('seal-text').textContent = sealChar;
+  document.getElementById('tiba-line').textContent = ganzhi() + seasonWord() + ' · ' + S.hao + ' 题';
+  document.getElementById('g-tiba').classList.add('shown');
+  document.getElementById('g-seal').classList.add('shown');
+  var zhi = buildZhi();
+  var skippedLeft = S.skipped.length;
+  show(
+    '<p class="end-title">成 卷</p>' +
+    '<div class="zhi">' + esc(zhi) + '</div>' +
+    '<div class="btns" style="margin-top:26px;">' +
+    '<button class="primary" onclick="exportPNG()">导出画卷</button>' +
+    '<button onclick="copyPrompt()">复制这段文字去见AI</button>' +
+    '<button onclick="duiduView()">两卷对读</button>' +
+    (skippedLeft>0 ? '<button onclick="reAnswer()">补答略过的 ' + skippedLeft + ' 问</button>' : '') +
+    '<button class="quiet" onclick="restart()">重新入山</button>' +
+    '</div>' +
+    '<p class="save-note" id="copy-note"></p>' +
+    '<p class="hint">想请朋友也画一卷？把这个网页文件直接发给 ta——各画各的山水，互不相扰。<br>两卷对读之处，即是相逢之处。</p>'
+  );
+}
+
+function reAnswer(){
+  S.pending = S.skipped; S.skipped = [];
+  document.getElementById('g-tiba').classList.remove('shown');
+  document.getElementById('g-seal').classList.remove('shown');
+  S.phase='walk'; save(); step();
+}
+function restart(){
+  if(!confirm('重新入山会抹去这一卷的所有笔墨，确定吗？')) return;
+  localStorage.removeItem(KEY);
+  S = {hao:S.hao, pending:null, skipped:[], answers:{}, phase:'start'};
+  document.getElementById('g-tiba').classList.remove('shown');
+  document.getElementById('g-seal').classList.remove('shown');
+  paint(); renderStart();
+}
+
+function note(msg){
+  var el = document.getElementById('copy-note');
+  if(el){ el.textContent = msg; setTimeout(function(){ el.textContent=''; }, 2600); }
+}
+function copyText(text, okMsg){
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(function(){ note(okMsg); }, function(){ fallbackCopy(text, okMsg); });
+  } else { fallbackCopy(text, okMsg); }
+}
+function fallbackCopy(text, okMsg){
+  var ta = document.createElement('textarea');
+  ta.value = text; document.body.appendChild(ta);
+  ta.select(); try{ document.execCommand('copy'); note(okMsg); }catch(e){ note('复制失败，请手动选取'); }
+  document.body.removeChild(ta);
+}
+function copyZhi(){ copyText(buildZhi(), '文字已复制到剪贴板'); }
+
+function copyPrompt(){
+  var lines = ['这是我在「心象山水」（一个自我探索的问答画卷）里的回答：',''];
+  for(var i=0;i<Q.length;i++){
+    if(S.answers[i]){
+      lines.push('【' + DIMS[Q[i].dim].name + '】' + Q[i].q);
+      lines.push('答：' + S.answers[i]);
+      lines.push('');
+    }
+  }
+  lines.push('请你作为一位懂佛道、温柔而清醒的朋友，读完这些回答之后：');
+  lines.push('1. 为我写一篇更深的「山水志」——看见我的模式、我的能量流向、我此刻真正的处境；');
+  lines.push('2. 指出我自己可能没看见的一处矛盾或一处宝藏；');
+  lines.push('3. 给我未来方向的三个具体提示，不要空话。');
+  copyText(lines.join('\n'), '已复制。去粘贴给你的 AI，让它替你深读这一卷');
+}
+
+var ORDER = ['jing','wu','shui','shan','ting','ren','zhou'];
+var RESONANCE = {
+  jing:'你们走的路，有一段是重叠的。',
+  wu:'你们的雾，说着相近的话。',
+  shui:'你们的水，往相近的方向流。',
+  shan:'你们望见的，是同一脉远山。',
+  ting:'你们在同一座亭里歇过脚。',
+  ren:'你们身体里，住着同一种火。',
+  zhou:'你们都认得那种同船的感觉。'
+};
+
+function h2(s){
+  var h = 5381;
+  for(var i=0;i<s.length;i++){ h = ((h<<5)+h+s.charCodeAt(i))>>>0; }
+  return h % 1048576;
+}
+function bigramHashes(dim){
+  var s = '';
+  for(var i=0;i<Q.length;i++){ if(Q[i].dim===dim && S.answers[i]) s += S.answers[i]; }
+  s = s.toLowerCase().replace(/[\s，。！？、；：,.!?…—「」『』()（）:;'"“”‘’-]/g,'');
+  var seen = {}, out = [];
+  for(var i=0;i<s.length-1;i++){
+    var b = s.slice(i,i+2);
+    if(!seen[b]){ seen[b]=1; out.push(h2(b)); if(out.length>=60) break; }
+  }
+  return out;
+}
+function tagData(){
+  var d = {};
+  for(var k=0;k<ORDER.length;k++){
+    var dim = ORDER[k];
+    d[dim] = {l:richLen(dim), b:bigramHashes(dim)};
+  }
+  return {v:1, h:S.hao, d:d};
+}
+function makeTag(deep){
+  var data = tagData();
+  if(deep){
+    data.deep = true;
+    var r = {};
+    for(var i=0;i<Q.length;i++){ if(S.answers[i]) r[i] = S.answers[i]; }
+    data.r = r;
+  }
+  return btoa(unescape(encodeURIComponent(JSON.stringify(data))));
+}
+function copyTag(){ copyText(makeTag(false), '隐私分享码已复制——对方看不到你写的任何内容，可以放心发'); }
+function copyDeepTag(){ copyText(makeTag(true), '完整分享码已复制（包含你写的全文）——只发给你信任的人'); }
+
+var lastTheirs = null;
+function copyPairPrompt(){
+  if(!lastTheirs || !lastTheirs.r){ note('需要对方发来「带内容」的分享码才能生成'); return; }
+  var friend = String(lastTheirs.h || '友人').slice(0,8);
+  var lines = ['这是两个人在「心象山水」（一个自我探索的问答画卷）里各自的回答。你是「' + S.hao + '」，朋友是「' + friend + '」：',''];
+  for(var i=0;i<Q.length;i++){
+    var mineA = S.answers[i], theirA = lastTheirs.r[i];
+    if(!mineA && !theirA) continue;
+    lines.push('【' + DIMS[Q[i].dim].name + '】' + Q[i].q);
+    if(mineA) lines.push('甲答：' + mineA);
+    if(theirA) lines.push('乙答：' + theirA);
+    lines.push('');
+  }
+  lines.push('请你作为一位懂佛道、温柔而清醒的朋友，读完两卷之后：');
+  lines.push('1. 说说两人精神上真正共鸣的地方，以及互补的差异——不要客套，要具体到他们写下的字句；');
+  lines.push('2. 分别指出每个人可能还没看见的自己；');
+  lines.push('3. 给他们三个适合一起聊的话题或同行的活动建议，要具体可做。');
+  copyText(lines.join('\n'), '已复制。粘贴给AI，替你们深读两卷');
+}
+
+function duiduView(){
+  show(
+    '<p class="end-title">对 读</p>' +
+    '<p class="hint">「复制隐私分享码」发给朋友，TA 看不到你写的任何一个字，只能看出两人哪里相似；' +
+    '「复制完整分享码」会带上你写的原文，只发给信任的人。' +
+    '把 TA 发来的分享码粘贴进来，看两卷山水在哪里相通。</p>' +
+    '<div class="btns"><button onclick="copyTag()">复制隐私分享码</button>' +
+    '<button onclick="copyDeepTag()">复制完整分享码</button></div>' +
+    '<div style="margin-top:14px;"><textarea id="tag-in" placeholder="把朋友的分享码粘贴在这里……" style="min-height:64px;"></textarea></div>' +
+    '<div class="btns"><button class="primary" onclick="duidu()">开始对读</button>' +
+    '<button class="quiet" onclick="finish()">回到成卷</button></div>' +
+    '<div class="btns" id="ai-row" style="display:none;"><button onclick="copyPairPrompt()">复制给AI分析</button></div>' +
+    '<p class="save-note" id="copy-note"></p>' +
+    '<div class="zhi" id="duidu-out"></div>'
+  );
+}
+function duidu(){
+  var out = document.getElementById('duidu-out');
+  var raw = document.getElementById('tag-in').value.trim();
+  if(!raw){ out.textContent = '先把朋友的分享码粘进来。'; return; }
+  var theirs = null;
+  try{ theirs = JSON.parse(decodeURIComponent(escape(atob(raw)))); }catch(e){}
+  if(!theirs || theirs.v!==1 || !theirs.d){ out.textContent = '这个分享码读不出来——请朋友确认复制完整。'; return; }
+  lastTheirs = theirs;
+  var aiRow = document.getElementById('ai-row');
+  if(aiRow) aiRow.style.display = (theirs.r && typeof theirs.r === 'object') ? 'flex' : 'none';
+  var mine = tagData();
+  var friend = String(theirs.h||'友人').slice(0,8);
+  var lines = [mine.h + ' 与 ' + friend + '，两卷对读：',''];
+  function deepest(t){
+    var best = null, bl = 0;
+    for(var k=0;k<ORDER.length;k++){
+      var dm = ORDER[k];
+      var l = (t.d[dm] && t.d[dm].l) || 0;
+      if(l > bl){ bl = l; best = dm; }
+    }
+    return best;
+  }
+  var md = deepest(mine), td = deepest(theirs);
+  if(md && td){
+    lines.push(md===td
+      ? '你们都把最深的墨，给了「' + DIMS[md].name + '」。'
+      : '你把最深的墨给了「' + DIMS[md].name + '」，ta 给了「' + DIMS[td].name + '」——正好互为风景。');
+    lines.push('');
+  }
+  var n = 0;
+  for(var k=0;k<ORDER.length;k++){
+    var dm = ORDER[k];
+    var a = (mine.d[dm] && mine.d[dm].b) || [];
+    var b = (theirs.d[dm] && theirs.d[dm].b) || [];
+    if(!a.length || !b.length) continue;
+    var setB = {};
+    for(var j=0;j<b.length;j++) setB[b[j]] = 1;
+    var inter = 0;
+    for(var j=0;j<a.length;j++) if(setB[a[j]]) inter++;
+    if(inter >= 1){ n++; lines.push(RESONANCE[dm]); }
+  }
+  lines.push('');
+  lines.push(n>0
+    ? '两卷共有 ' + n + ' 处相通。相通之处，即是渡口。'
+    : '这一读，字句上未见相通——两座山隔水相望，也是一种相逢。');
+  if(theirs.r && typeof theirs.r === 'object'){
+    lines.push('');
+    lines.push('（对方发来的是完整分享码，包含 ta 写的全文——可以复制下方给AI分析，请 AI 深读两卷真正的共鸣。）');
+  } else {
+    lines.push('');
+    lines.push('（对方的分享码不含内容，看不出更深的共鸣。若想深读，请 ta 改发「带内容」的分享码。）');
+  }
+  out.textContent = lines.join('\n');
+}
+
+function exportPNG(){
+  var svg = document.getElementById('scene');
+  var clone = svg.cloneNode(true);
+  clone.setAttribute('width','1800'); clone.setAttribute('height','1040');
+  for(var d in DIMS){
+    var st = stageOf(d);
+    var g = clone.querySelector('#g-'+d);
+    g.setAttribute('opacity', st===0 ? '0.13' : String(inkOpacity(d)));
+    var det = g.querySelector('.detail');
+    if(det) det.setAttribute('opacity', st===2 ? '1' : '0');
+    var rgc = g.querySelector('.rich');
+    if(rgc){
+      var live = document.getElementById('g-'+d).querySelector('.rich');
+      rgc.setAttribute('opacity', (live && live.classList.contains('shown')) ? '1' : '0');
+    }
+  }
+  ['g-tiba','g-seal'].forEach(function(id){
+    var shown = document.getElementById(id).classList.contains('shown');
+    clone.querySelector('#'+id).setAttribute('opacity', shown ? '1' : '0');
+  });
+  var data = new XMLSerializer().serializeToString(clone);
+  var b64 = btoa(unescape(encodeURIComponent(data)));
+  var img = new Image();
+  img.onload = function(){
+    var c = document.createElement('canvas');
+    c.width = 1800; c.height = 1040;
+    var ctx = c.getContext('2d');
+    ctx.fillStyle = '#f5f1e6'; ctx.fillRect(0,0,1800,1040);
+    ctx.drawImage(img,0,0,1800,1040);
+    var a = document.createElement('a');
+    a.download = '心象山水 · ' + S.hao + '.png';
+    a.href = c.toDataURL('image/png');
+    a.click();
+    note('画卷已导出');
+  };
+  img.onerror = function(){ note('导出失败，请截图保存'); };
+  img.src = 'data:image/svg+xml;base64,' + b64;
+}
+
+document.getElementById('paper').classList.add('shown');
+paint();
+if(S.phase === 'walk' && S.pending && (S.pending.length>0 || S.skipped.length>0)){
+  if(S.pending.length===0){ S.pending=S.skipped; S.skipped=[]; }
+  step();
+} else if(S.phase === 'done'){
+  finish();
+} else {
+  renderStart();
+}
+</script>
+</body>
+</html>
