@@ -85,6 +85,64 @@
   @keyframes drift2{from{transform:translateX(10px);}to{transform:translateX(-10px);}}
   .drift1{animation:drift 26s ease-in-out infinite alternate;}
   .drift2{animation:drift2 34s ease-in-out infinite alternate;}
+
+  .chips button{font-size:14px; padding:6px 16px; letter-spacing:.1em; text-indent:.1em;}
+  button.on{background:var(--ink); color:var(--paper); border-color:var(--ink);}
+  svg.placing{cursor:crosshair;}
+  svg.erasing{cursor:pointer;}
+  svg.erasing [data-eid]:hover, svg.erasing [data-mark]:hover{opacity:.22;}
+
+  @keyframes cloud-l{0%{transform:translateX(-24px);}100%{transform:translateX(72px);}}
+  @keyframes cloud-r{0%{transform:translateX(52px);}100%{transform:translateX(-60px);}}
+  @keyframes wave{0%{transform:translateX(-12px);}100%{transform:translateX(16px);}}
+  @keyframes breeze{from{transform:rotate(-2deg);}to{transform:rotate(2.6deg);}}
+  @keyframes flicker{0%,100%{opacity:.4;}50%{opacity:1;}}
+  @keyframes glowmoon{from{opacity:.62; transform:scale(.96);}to{opacity:1; transform:scale(1.04);}}
+  @keyframes walkbob{0%,100%{transform:translateY(0);}50%{transform:translateY(-3px);}}
+  @keyframes leap{0%,58%,100%{transform:translate(0,0) rotate(0);}72%{transform:translate(7px,-20px) rotate(-16deg);}85%{transform:translate(13px,-3px) rotate(9deg);}}
+  @keyframes sail{0%{transform:translate(0,0) rotate(-1deg);}50%{transform:translate(74px,-4px) rotate(1.3deg);}100%{transform:translate(150px,2px) rotate(-1deg);}}
+  @keyframes cranefly{
+    0%{transform:translate(0,0);opacity:0;}
+    6%{opacity:1;}
+    66%{transform:translate(220px,-92px);opacity:1;}
+    84%{transform:translate(330px,-150px);opacity:0;}
+    100%{transform:translate(0,0);opacity:0;}
+  }
+  @keyframes geesefly{
+    0%{transform:translate(0,0);opacity:0;}
+    8%{opacity:1;}
+    72%{transform:translate(-240px,-78px);opacity:1;}
+    88%{transform:translate(-340px,-120px);opacity:0;}
+    100%{transform:translate(0,0);opacity:0;}
+  }
+  @keyframes birdcross{
+    0%{transform:translate(0,0);opacity:0;}
+    10%{opacity:1;}
+    78%{transform:translate(170px,-52px);opacity:1;}
+    92%{transform:translate(250px,-80px);opacity:0;}
+    100%{transform:translate(0,0);opacity:0;}
+  }
+  @keyframes flap{0%,100%{transform:rotate(7deg);}50%{transform:rotate(-28deg);}}
+  @keyframes flap2{0%,100%{transform:rotate(-5deg);}50%{transform:rotate(22deg);}}
+  .alive #g-wu .drift1{animation:cloud-l 15s ease-in-out infinite alternate;}
+  .alive #g-wu .drift2{animation:cloud-r 18s ease-in-out infinite alternate;}
+  .alive #g-shui > path{transform-box:fill-box; animation:wave 8s ease-in-out infinite alternate;}
+  .alive #g-shui > path:nth-of-type(2){animation-duration:11s; animation-delay:-3s;}
+  .alive #g-shui > path:nth-of-type(4){animation-duration:13s; animation-delay:-6s;}
+  .alive #g-zhou{transform-box:fill-box; transform-origin:center; animation:sail 20s ease-in-out infinite alternate;}
+  .alive #g-zhou .detail circle{animation:flicker 2.6s ease-in-out infinite;}
+  .alive #g-ren .detail{animation:birdcross 12s ease-in infinite;}
+  .alive #g-ren .rich{animation:birdcross 12s ease-in infinite; animation-delay:-5s;}
+  .alive #g-ren > path, .alive #g-ren > circle, .alive #g-ren > line{transform-box:fill-box; animation:walkbob 2.4s ease-in-out infinite;}
+  .alive #g-ting .rich{transform-box:fill-box; transform-origin:50% 0%; animation:breeze 6s ease-in-out infinite alternate;}
+  .alive .mark-he{animation:cranefly 9s ease-in infinite;}
+  .alive .mark-he .wg-u{transform-box:fill-box; transform-origin:88% 100%; animation:flap .7s ease-in-out infinite;}
+  .alive .mark-he .wg-d{transform-box:fill-box; transform-origin:88% 0%; animation:flap2 .7s ease-in-out infinite;}
+  .alive .mark-yan{animation:geesefly 11s ease-in infinite;}
+  .alive .mark-yue{transform-box:fill-box; transform-origin:center; animation:glowmoon 5s ease-in-out infinite alternate;}
+  .alive .mark-yu{transform-box:fill-box; animation:leap 6s ease-in-out infinite;}
+  .alive .mark-zhou2{transform-box:fill-box; transform-origin:center; animation:sail 16s ease-in-out infinite alternate;}
+  .alive .mark-mei, .alive .mark-zhu, .alive .mark-song{transform-box:fill-box; transform-origin:bottom center; animation:breeze 6s ease-in-out infinite alternate;}
   @media (max-width:600px){
     h1.title{font-size:26px;}
     .question{font-size:18px;}
@@ -105,6 +163,10 @@
         <feTurbulence type="fractalNoise" baseFrequency="0.012 0.05" numOctaves="3" seed="7" result="w"/>
         <feDisplacementMap in="SourceGraphic" in2="w" scale="2.2" xChannelSelector="R" yChannelSelector="G"/>
       </filter>
+      <filter id="dry-brush" x="-8%" y="-8%" width="116%" height="116%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.03 0.11" numOctaves="4" seed="17" result="n"/>
+        <feDisplacementMap in="SourceGraphic" in2="n" scale="3.4" xChannelSelector="R" yChannelSelector="G"/>
+      </filter>
       <filter id="grain">
         <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="3" result="n"/>
         <feColorMatrix in="n" type="matrix" values="0 0 0 0 0.42  0 0 0 0 0.40  0 0 0 0 0.34  0 0 0 0.05 0"/>
@@ -114,36 +176,42 @@
     <rect id="grain-rect" x="0" y="0" width="900" height="520" filter="url(#grain)"/>
 
     <g id="g-shan" class="dim-g st0" filter="url(#brush)">
-      <path d="M455 240 C490 200 525 168 565 164 C605 160 625 190 660 198 C685 203 700 178 725 172 C755 165 775 185 805 190 C835 195 860 178 900 200 L900 240 Z" fill="#c0cbc4"/>
-      <path d="M340 300 C380 268 410 250 450 252 C485 254 505 234 540 236 C570 238 592 256 625 258 C655 260 680 244 715 248 L715 300 Z" fill="#a3b3a8" opacity=".85"/>
-      <path d="M30 330 C80 310 120 200 165 128 C190 86 215 80 238 116 C278 178 315 255 395 318 L395 330 Z" fill="#8ba095"/>
-      <path d="M150 165 C178 120 200 116 218 148 C236 180 256 216 288 260 C246 236 196 216 150 165 Z" fill="#6f857c"/>
-      <path d="M18 340 C22 320 34 312 48 316 C58 308 72 310 78 322 C88 320 96 330 92 342 C96 352 88 362 74 360 C62 366 46 364 40 354 C28 358 16 352 18 340 Z" fill="#7f9186"/>
-      <path d="M60 300 C66 288 78 286 84 296 C92 292 100 300 96 310 C90 316 78 316 72 310 C62 314 56 308 60 300 Z" fill="#94a599" opacity=".9"/>
+      <path d="M0 346 C54 330 92 257 128 184 C156 128 184 82 218 93 C252 104 276 168 309 219 C337 263 365 297 408 323 C304 314 202 312 113 323 C64 329 28 340 0 358 Z" fill="#7f9589" opacity=".9" filter="url(#dry-brush)"/>
+      <path d="M88 312 C126 250 160 168 205 142 C248 117 280 203 319 272 C260 236 179 219 88 312 Z" fill="#596f64" opacity=".62" filter="url(#dry-brush)"/>
+      <path d="M22 338 C74 286 106 214 146 156 C174 116 206 102 235 132 C262 160 281 214 318 270 C232 242 124 274 22 338 Z" fill="#9baea3" opacity=".35" filter="url(#dry-brush)"/>
+      <path d="M455 244 C500 194 545 154 592 160 C632 165 650 198 688 204 C718 209 739 180 768 174 C800 167 819 187 850 194 C872 199 887 194 900 188 L900 246 C814 231 728 232 642 238 C570 243 508 247 455 244 Z" fill="#b5c3ba" opacity=".72" filter="url(#dry-brush)"/>
+      <path d="M330 308 C383 270 432 247 486 251 C524 254 548 232 586 238 C618 243 637 264 673 265 C705 266 731 248 768 252 L768 308 C626 292 477 293 330 308 Z" fill="#94a89c" opacity=".62" filter="url(#dry-brush)"/>
+      <path d="M18 340 C22 320 34 312 48 316 C58 308 72 310 78 322 C88 320 96 330 92 342 C96 352 88 362 74 360 C62 366 46 364 40 354 C28 358 16 352 18 340 Z" fill="#6f8479" opacity=".85"/>
+      <path d="M60 300 C66 288 78 286 84 296 C92 292 100 300 96 310 C90 316 78 316 72 310 C62 314 56 308 60 300 Z" fill="#87998d" opacity=".75"/>
       <g class="detail">
-        <path d="M520 205 C555 182 585 168 620 170 C650 172 672 156 704 152 C734 148 758 162 792 166 C822 170 846 160 872 168" fill="none" stroke="#cfd8d2" stroke-width="9" opacity=".7"/>
-        <path d="M178 202 q14 20 30 36" stroke="#55645d" stroke-width="1.2" fill="none" opacity=".65"/>
-        <path d="M158 226 q18 24 40 42" stroke="#55645d" stroke-width="1.2" fill="none" opacity=".6"/>
-        <path d="M206 172 q10 18 24 34" stroke="#55645d" stroke-width="1.2" fill="none" opacity=".65"/>
-        <path d="M236 210 q12 20 28 36" stroke="#55645d" stroke-width="1" fill="none" opacity=".5"/>
-        <path d="M120 260 q16 22 34 40" stroke="#4e5c56" stroke-width="1.1" fill="none" opacity=".55"/>
-        <path d="M95 288 q20 20 42 34" stroke="#4e5c56" stroke-width="1" fill="none" opacity=".5"/>
-        <path d="M260 190 q10 16 22 30" stroke="#55645d" stroke-width="1" fill="none" opacity=".5"/>
-        <path d="M60 316 q18 14 36 24" stroke="#4e5c56" stroke-width="1" fill="none" opacity=".45"/>
-        <path d="M30 336 q10 -14 26 -18" stroke="#4e5c56" stroke-width="1" fill="none" opacity=".55"/>
-        <path d="M62 348 q12 -10 24 -14" stroke="#4e5c56" stroke-width="1" fill="none" opacity=".5"/>
-        <circle cx="180" cy="140" r="2.2" fill="#39423e" opacity=".6"/>
-        <circle cx="196" cy="150" r="1.8" fill="#39423e" opacity=".55"/>
-        <circle cx="168" cy="156" r="1.6" fill="#39423e" opacity=".5"/>
-        <circle cx="222" cy="168" r="2" fill="#39423e" opacity=".55"/>
-        <circle cx="44" cy="326" r="1.8" fill="#39423e" opacity=".5"/>
-        <circle cx="66" cy="316" r="1.6" fill="#39423e" opacity=".5"/>
+        <path d="M500 202 C545 174 587 156 631 164 C663 170 685 151 722 148 C761 145 787 162 824 168 C851 173 873 163 898 169" fill="none" stroke="#d3dbd5" stroke-width="10" opacity=".55" filter="url(#dry-brush)"/>
+        <path d="M131 232 q20 37 55 70" stroke="#405149" stroke-width="1.4" fill="none" opacity=".56"/>
+        <path d="M157 188 q24 45 62 82" stroke="#405149" stroke-width="1.35" fill="none" opacity=".62"/>
+        <path d="M190 146 q13 32 39 70" stroke="#405149" stroke-width="1.25" fill="none" opacity=".58"/>
+        <path d="M226 166 q15 34 42 71" stroke="#405149" stroke-width="1.1" fill="none" opacity=".48"/>
+        <path d="M91 304 q29 -20 68 -27" stroke="#405149" stroke-width="1.25" fill="none" opacity=".48"/>
+        <path d="M56 333 q31 -23 72 -29" stroke="#405149" stroke-width="1.1" fill="none" opacity=".48"/>
+        <path d="M255 204 q14 26 37 52" stroke="#405149" stroke-width="1" fill="none" opacity=".45"/>
+        <path d="M64 318 q21 14 43 24" stroke="#405149" stroke-width="1" fill="none" opacity=".4"/>
+        <path d="M34 338 q11 -15 28 -20" stroke="#405149" stroke-width="1" fill="none" opacity=".48"/>
+        <circle cx="174" cy="150" r="2.4" fill="#34413c" opacity=".62"/>
+        <circle cx="190" cy="162" r="1.9" fill="#34413c" opacity=".55"/>
+        <circle cx="208" cy="176" r="1.7" fill="#34413c" opacity=".52"/>
+        <circle cx="224" cy="190" r="2.1" fill="#34413c" opacity=".5"/>
+        <circle cx="143" cy="224" r="1.8" fill="#34413c" opacity=".48"/>
+        <circle cx="164" cy="238" r="1.5" fill="#34413c" opacity=".45"/>
+        <circle cx="47" cy="327" r="1.8" fill="#34413c" opacity=".5"/>
+        <circle cx="69" cy="317" r="1.6" fill="#34413c" opacity=".5"/>
       </g>
       <g class="rich">
-        <path d="M470 150 C520 118 560 100 600 104 C630 107 650 92 685 88 C715 85 740 100 775 102 C805 104 830 96 875 112" stroke="#d5dcd7" stroke-width="6" fill="none" opacity=".65"/>
-        <path d="M600 130 C640 112 670 102 705 106 C735 109 758 98 790 102" stroke="#e3e7e1" stroke-width="5" fill="none" opacity=".55"/>
-        <circle cx="560" cy="112" r="1.8" fill="#5f6f66" opacity=".5"/>
-        <circle cx="600" cy="106" r="1.6" fill="#5f6f66" opacity=".45"/>
+        <path d="M465 151 C516 116 560 98 606 104 C638 108 660 90 699 86 C734 83 760 100 797 104 C831 107 858 95 899 111" stroke="#d5dcd7" stroke-width="7" fill="none" opacity=".58" filter="url(#dry-brush)"/>
+        <path d="M592 133 C638 112 674 101 714 107 C747 112 769 99 803 104" stroke="#e5e9e4" stroke-width="5" fill="none" opacity=".55"/>
+        <path d="M118 180 q21 42 63 76 M145 154 q31 55 83 94 M88 286 q49 -21 104 -21" stroke="#34413c" stroke-width="1.05" fill="none" opacity=".42"/>
+        <circle cx="558" cy="112" r="1.8" fill="#55675f" opacity=".5"/>
+        <circle cx="600" cy="106" r="1.6" fill="#55675f" opacity=".45"/>
+        <circle cx="636" cy="112" r="1.4" fill="#55675f" opacity=".4"/>
+        <circle cx="194" cy="206" r="1.5" fill="#34413c" opacity=".46"/>
+        <circle cx="212" cy="218" r="1.2" fill="#34413c" opacity=".42"/>
       </g>
     </g>
 
@@ -204,21 +272,25 @@
     </g>
 
     <g id="g-jing" class="dim-g st0" filter="url(#brush)">
-      <path d="M95 505 C160 470 150 448 200 428 C255 405 240 390 295 368 C325 356 335 348 350 340" stroke="#6b756f" stroke-width="2.5" fill="none" stroke-dasharray="2 9" stroke-linecap="round"/>
-      <circle cx="130" cy="486" r="1.4" fill="#55645d" opacity=".7"/>
-      <circle cx="175" cy="452" r="1.4" fill="#55645d" opacity=".7"/>
-      <circle cx="222" cy="418" r="1.4" fill="#55645d" opacity=".7"/>
-      <circle cx="268" cy="386" r="1.4" fill="#55645d" opacity=".7"/>
+      <path d="M74 512 C124 471 153 447 202 427 C251 407 270 386 311 367 C334 356 345 347 358 337" stroke="#6f7b73" stroke-width="12" fill="none" stroke-linecap="round" opacity=".12" filter="url(#dry-brush)"/>
+      <path class="ink-line" d="M78 508 C128 470 154 447 202 428 C252 408 271 387 311 368 C334 357 345 348 358 338" stroke="#34413c" stroke-width="1.8" fill="none" stroke-linecap="round" opacity=".58"/>
+      <path d="M91 499 q18 -13 38 -21 M144 458 q24 -15 51 -24 M215 420 q28 -11 50 -30 M282 381 q26 -14 47 -29" stroke="#34413c" stroke-width="1" fill="none" opacity=".42"/>
+      <circle cx="128" cy="486" r="1.3" fill="#44534d" opacity=".56"/>
+      <circle cx="175" cy="453" r="1.2" fill="#44534d" opacity=".54"/>
+      <circle cx="224" cy="419" r="1.2" fill="#44534d" opacity=".5"/>
+      <circle cx="268" cy="388" r="1.2" fill="#44534d" opacity=".48"/>
       <g class="detail">
-        <path d="M350 340 C368 330 372 322 388 314" stroke="#6b756f" stroke-width="2.5" fill="none" stroke-dasharray="2 9" stroke-linecap="round"/>
-        <circle cx="310" cy="360" r="1.6" fill="#55645d"/><circle cx="322" cy="353" r="1.6" fill="#55645d"/><circle cx="334" cy="347" r="1.6" fill="#55645d"/>
-        <line x1="272" y1="384" x2="300" y2="372" stroke="#4a5350" stroke-width="3" stroke-linecap="round"/>
-        <line x1="270" y1="390" x2="298" y2="378" stroke="#4a5350" stroke-width="1.4" opacity=".8"/>
+        <path d="M358 338 C376 327 381 319 398 311" stroke="#34413c" stroke-width="1.7" fill="none" stroke-linecap="round" opacity=".58"/>
+        <path d="M302 365 q16 -11 36 -18 M318 358 q14 -7 28 -15 M348 338 q15 -6 28 -17" stroke="#34413c" stroke-width=".95" fill="none" opacity=".45"/>
+        <circle cx="307" cy="363" r="1.4" fill="#44534d" opacity=".62"/><circle cx="321" cy="355" r="1.4" fill="#44534d" opacity=".6"/><circle cx="335" cy="348" r="1.4" fill="#44534d" opacity=".58"/>
+        <line x1="270" y1="384" x2="300" y2="372" stroke="#3f4a44" stroke-width="2.6" stroke-linecap="round" opacity=".75"/>
+        <line x1="268" y1="390" x2="297" y2="379" stroke="#3f4a44" stroke-width="1.2" opacity=".65"/>
       </g>
       <g class="rich">
-        <path d="M388 314 C402 306 406 298 420 290" stroke="#6b756f" stroke-width="2.5" fill="none" stroke-dasharray="2 9" stroke-linecap="round"/>
-        <circle cx="396" cy="310" r="1.6" fill="#55645d"/><circle cx="408" cy="302" r="1.6" fill="#55645d"/>
-        <path d="M420 290 C438 280 452 268 466 252" stroke="#8a938c" stroke-width="1.6" fill="none" stroke-dasharray="1 8" opacity=".7"/>
+        <path d="M398 311 C415 301 424 290 439 276 C451 265 459 257 469 246" stroke="#34413c" stroke-width="1.55" fill="none" stroke-linecap="round" opacity=".48"/>
+        <path d="M396 314 q17 -7 33 -22 M426 284 q17 -10 30 -24" stroke="#34413c" stroke-width=".9" fill="none" opacity=".4"/>
+        <circle cx="397" cy="310" r="1.5" fill="#44534d" opacity=".56"/><circle cx="410" cy="301" r="1.4" fill="#44534d" opacity=".54"/>
+        <path d="M419 292 C438 282 453 268 466 252" stroke="#849089" stroke-width="4.6" fill="none" stroke-linecap="round" opacity=".12" filter="url(#dry-brush)"/>
       </g>
     </g>
 
@@ -271,13 +343,13 @@
       <line x1="213" y1="410" x2="217" y2="450" stroke="#2f3734" stroke-width="1.2"/>
       <path d="M198 414 q-10 4 -14 12" stroke="#2f3734" stroke-width="1" fill="none" opacity=".8"/>
       <g class="detail">
-        <path d="M494 92 q5 -6 10 0 M504 92 q5 -6 10 0" stroke="#39423e" stroke-width="1.5" fill="none"/>
-        <path d="M530 104 q4 -5 8 0 M538 104 q4 -5 8 0" stroke="#39423e" stroke-width="1.2" fill="none"/>
-        <path d="M470 100 q4 -5 8 0" stroke="#39423e" stroke-width="1.1" fill="none" opacity=".85"/>
+        <path d="M486 94 Q490 88 494 94 Q498 88 502 94" stroke="#39423e" stroke-width="1.3" fill="none" stroke-linecap="round"/>
+        <path d="M524 104 Q528 99 532 104 Q536 99 540 104" stroke="#39423e" stroke-width="1.1" fill="none" stroke-linecap="round"/>
+        <path d="M462 100 Q466 95 470 100 Q474 95 478 100" stroke="#39423e" stroke-width="1" fill="none" stroke-linecap="round" opacity=".85"/>
       </g>
       <g class="rich">
-        <path d="M560 76 q4 -5 8 0 M568 76 q4 -5 8 0 M577 79 q4 -5 8 0" stroke="#39423e" stroke-width="1.2" fill="none"/>
-        <path d="M548 88 q4 -5 8 0 M600 92 q4 -5 8 0" stroke="#39423e" stroke-width="1" fill="none" opacity=".8"/>
+        <path d="M550 78 Q554 72 558 78 Q562 72 566 78" stroke="#39423e" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+        <path d="M588 92 Q592 87 596 92 Q600 87 604 92" stroke="#39423e" stroke-width="1" fill="none" stroke-linecap="round" opacity=".8"/>
       </g>
     </g>
 
@@ -420,7 +492,7 @@ function paint(){
 }
 
 function drawOn(g, sel){
-  var els = g.querySelectorAll(sel || '.detail path, .detail line');
+  var els = g.querySelectorAll(sel || '.ink-line, .detail path, .detail line');
   for(var i=0;i<els.length;i++){
     (function(el){
       if(el.getAttribute('stroke-dasharray')) return;
@@ -597,7 +669,9 @@ function finish(){
     '<p class="end-title">成 卷</p>' +
     '<div class="zhi">' + esc(zhi) + '</div>' +
     '<div class="btns" style="margin-top:26px;">' +
-    '<button class="primary" onclick="exportPNG()">导出画卷</button>' +
+    '<button class="primary" onclick="renderStudio()">亲手添几笔</button>' +
+    '<button id="alive-btn" onclick="toggleAlive()">' + (S.alive?'静下来':'动起来') + '</button>' +
+    '<button onclick="exportPNG()">导出画卷</button>' +
     '<button onclick="copyPrompt()">复制这段文字去见AI</button>' +
     '<button onclick="duiduView()">两卷对读</button>' +
     (skippedLeft>0 ? '<button onclick="reAnswer()">补答略过的 ' + skippedLeft + ' 问</button>' : '') +
@@ -617,9 +691,14 @@ function reAnswer(){
 function restart(){
   if(!confirm('重新入山会抹去这一卷的所有笔墨，确定吗？')) return;
   localStorage.removeItem(KEY);
-  S = {hao:S.hao, pending:null, skipped:[], answers:{}, phase:'start'};
+  S = {hao:S.hao, pending:null, skipped:[], answers:{}, phase:'start', marks:[], alive:false};
   document.getElementById('g-tiba').classList.remove('shown');
   document.getElementById('g-seal').classList.remove('shown');
+  var gm = document.getElementById('g-marks');
+  if(gm) gm.innerHTML = '';
+  var hidden = document.querySelectorAll('#scene [data-eid]');
+  for(var i=0;i<hidden.length;i++){ hidden[i].style.display = ''; }
+  document.getElementById('scene').classList.remove('alive');
   paint(); renderStart();
 }
 
@@ -834,7 +913,292 @@ function exportPNG(){
   img.src = 'data:image/svg+xml;base64,' + b64;
 }
 
+var SVGNS = 'http://www.w3.org/2000/svg';
+var KINDS = [
+  {k:'yan', n:'一行雁'}, {k:'he', n:'鹤'}, {k:'zhou2', n:'小舟'}, {k:'song', n:'松'},
+  {k:'zhu', n:'竹'}, {k:'mei', n:'梅枝'}, {k:'yue', n:'月'}, {k:'ta', n:'远塔'},
+  {k:'shi', n:'石'}, {k:'wu2', n:'茅屋'}, {k:'yu', n:'鱼跃'}, {k:'zi', n:'题字'}
+];
+var MARK_TPL = {
+  yan: function(){ return '<path d="M-30 2 Q-25 -5 -20 1 Q-15 -5 -10 2" fill="none" stroke="#39423e" stroke-width="1.3" stroke-linecap="round"/>' +
+    '<path d="M-8 -3 Q-3 -11 2 -4 Q7 -11 12 -3" fill="none" stroke="#39423e" stroke-width="1.5" stroke-linecap="round"/>' +
+    '<path d="M14 3 Q19 -4 24 2 Q29 -4 34 3" fill="none" stroke="#39423e" stroke-width="1.2" stroke-linecap="round"/>'; },
+  he: function(){ return '<path d="M-13 3 L-33 10 M-11 4 L-30 15" stroke="#3a433f" stroke-width="1.1" fill="none" stroke-linecap="round"/>' +
+    '<path d="M-13 1 L-24 -2 M-13 2 L-23 4" stroke="#3a433f" stroke-width="1" fill="none"/>' +
+    '<g class="wg-d"><path d="M2 1 C-8 8 -18 12 -29 12 C-18 6 -8 3 3 0 Z" fill="#e6e0d2" stroke="#3a433f" stroke-width="1"/></g>' +
+    '<path d="M-14 1 C-4 -3 8 -3 18 -2 C12 1 0 3 -14 3 Z" fill="#f4f0e6" stroke="#3a433f" stroke-width="1.2"/>' +
+    '<path d="M17 -2 C24 -4 27 -9 33 -11 C36 -12 38 -12 40 -12" fill="none" stroke="#3a433f" stroke-width="1.5"/>' +
+    '<circle cx="41" cy="-12" r="1.7" fill="#f4f0e6" stroke="#3a433f" stroke-width=".9"/>' +
+    '<circle cx="40" cy="-14" r="1.2" fill="#a63d2a"/>' +
+    '<path d="M42 -12 l6 1" stroke="#3a433f" stroke-width="1" stroke-linecap="round"/>' +
+    '<circle cx="41.4" cy="-11.6" r=".4" fill="#2f3734"/>' +
+    '<g class="wg-u"><path d="M4 -1 C-6 -13 -19 -19 -31 -19 C-19 -12 -8 -6 5 -1 Z" fill="#f0eadd" stroke="#3a433f" stroke-width="1.1"/>' +
+    '<path d="M-31 -19 l7 2 M-22 -16 l7 3 M-13 -12 l6 3" stroke="#3a433f" stroke-width=".7" opacity=".5" fill="none"/></g>'; },
+  zhou2: function(){ return '<path d="M-28 6 Q0 16 28 6 Q0 10 -28 6 Z" fill="#39423e"/>' +
+    '<circle cx="-4" cy="-2" r="2.4" fill="#2f3734"/><path d="M-4 0 L-4 7" stroke="#2f3734" stroke-width="1.6"/>' +
+    '<path d="M2 -6 L8 8" stroke="#39423e" stroke-width="1.1"/>' +
+    '<path d="M-40 12 q16 5 34 2 M8 13 q16 4 32 0" stroke="#8aa098" stroke-width="1" fill="none" opacity=".7"/>'; },
+  song: function(){ return '<path d="M0 30 C-2 14 4 2 -2 -14" stroke="#4a5350" stroke-width="2.6" fill="none"/>' +
+    '<path d="M-2 -14 C2 -20 -2 -26 2 -32" stroke="#4a5350" stroke-width="1.8" fill="none"/>' +
+    '<path d="M-2 -14 l-12 -6 M-2 -14 l-14 0 M-2 -14 l-11 6" stroke="#3f4a44" stroke-width="1.1" fill="none"/>' +
+    '<path d="M0 2 l13 -7 M0 2 l15 -1 M0 2 l12 6" stroke="#3f4a44" stroke-width="1.1" fill="none"/>' +
+    '<path d="M2 -32 l-10 -6 M2 -32 l-11 0 M2 -32 l4 -11 M2 -32 l10 -5" stroke="#3f4a44" stroke-width="1" fill="none"/>'; },
+  zhu: function(){ return '<path d="M-6 28 C-6 12 -8 -4 -4 -22" stroke="#4a5350" stroke-width="1.7" fill="none"/>' +
+    '<path d="M4 28 C4 14 2 0 6 -16" stroke="#4a5350" stroke-width="1.4" fill="none"/>' +
+    '<path d="M-6 12 l3 0 M-6 -4 l3 0 M4 14 l3 0 M4 0 l3 0" stroke="#4a5350" stroke-width="1"/>' +
+    '<path d="M-4 -22 l-9 -6 M-4 -22 l-10 1 M-4 -22 l-6 8 M6 -16 l8 -7 M6 -16 l10 0 M6 -16 l7 7" stroke="#3f4a44" stroke-width="1.1" fill="none"/>'; },
+  mei: function(){ return '<path d="M-26 16 C-12 8 2 6 12 -4 C18 -10 26 -14 32 -14" stroke="#4a5350" stroke-width="1.8" fill="none"/>' +
+    '<path d="M0 6 C4 0 10 -2 12 -8" stroke="#4a5350" stroke-width="1.2" fill="none"/>' +
+    '<circle cx="6" cy="4" r="2.2" fill="#a63d2a" opacity=".85"/><circle cx="16" cy="-6" r="2.2" fill="#a63d2a" opacity=".85"/>' +
+    '<circle cx="24" cy="-12" r="2" fill="#a63d2a" opacity=".8"/><circle cx="12" cy="-10" r="1.6" fill="#a63d2a" opacity=".75"/>' +
+    '<circle cx="30" cy="-16" r="1.3" fill="#a63d2a" opacity=".7"/>'; },
+  yue: function(){ return '<circle cx="0" cy="0" r="14" fill="#eee9da" stroke="#c9c2ad" stroke-width="1"/>' +
+    '<circle cx="0" cy="0" r="19" fill="none" stroke="#d8d2c0" stroke-width="3" opacity=".35"/>'; },
+  ta: function(){ return '<path d="M-12 24 L12 24 M-10 24 L-10 14 M10 24 L10 14 M-13 14 L13 14 M-8 14 L-8 5 M8 14 L8 5 M-11 5 L11 5 M-6 5 L-6 -3 M6 5 L6 -3 M-9 -3 L9 -3 M-4 -3 L-4 -10 M4 -3 L4 -10 M-7 -10 L7 -10 M0 -10 L0 -20 M0 -20 l0 -6" stroke="#55645d" stroke-width="1.3" fill="none"/>'; },
+  shi: function(){ return '<path d="M-16 8 C-14 -2 -4 -8 4 -4 C12 -8 20 -2 18 6 C22 12 14 18 4 16 C-6 20 -16 16 -16 8 Z" fill="#7f9186" opacity=".85"/>' +
+    '<path d="M-8 4 q8 -6 16 -4" stroke="#4e5c56" stroke-width=".9" fill="none" opacity=".6"/>'; },
+  wu2: function(){ return '<path d="M-18 2 L0 -12 L18 2" stroke="#55645d" stroke-width="1.6" fill="none"/>' +
+    '<path d="M-14 2 L-14 14 M14 2 L14 14 M-16 14 L16 14" stroke="#55645d" stroke-width="1.3" fill="none"/>' +
+    '<path d="M-20 2 L20 2" stroke="#55645d" stroke-width="1.2"/>' +
+    '<path d="M-3 14 L-3 6 L4 6 L4 14" stroke="#55645d" stroke-width="1" fill="none"/>'; },
+  yu: function(){ return '<path d="M-8 0 q8 -12 20 -8 q-2 8 -12 10 q-6 3 -8 -2 Z" fill="#55645d" opacity=".8"/>' +
+    '<circle cx="16" cy="6" r="1.2" fill="#8aa098"/>' +
+    '<path d="M-14 10 q14 5 30 2" stroke="#8aa098" stroke-width="1" fill="none" opacity=".7"/>'; },
+  zi: function(m){ return '<text font-size="15" fill="#4a5350" style="writing-mode:vertical-rl; letter-spacing:4px;">' + esc(m.tx||'') + '</text>'; }
+};
+
+var studioMode = null, placeKind = null;
+
+function ensureMarksGroup(){
+  var svg = document.getElementById('scene');
+  var gm = document.getElementById('g-marks');
+  if(!gm){
+    gm = document.createElementNS(SVGNS,'g');
+    gm.setAttribute('id','g-marks');
+    svg.insertBefore(gm, document.getElementById('g-tiba'));
+  }
+  return gm;
+}
+function assignEids(){
+  var groups = ['g-shan','g-wu','g-shui','g-jing','g-decor','g-ting','g-ren','g-zhou'];
+  for(var i=0;i<groups.length;i++){
+    var g = document.getElementById(groups[i]);
+    if(!g) continue;
+    var els = g.querySelectorAll('path, line, circle, ellipse');
+    for(var j=0;j<els.length;j++){ els[j].setAttribute('data-eid', groups[i]+'/'+j); }
+  }
+}
+function refEl(ref){
+  if(ref.indexOf('mark:')===0) return document.querySelector('[data-mark="'+ref.slice(5)+'"]');
+  return document.querySelector('[data-eid="'+ref+'"]');
+}
+function createMark(m, animate){
+  var gm = ensureMarksGroup();
+  var g = document.createElementNS(SVGNS,'g');
+  g.setAttribute('data-mark', m.id);
+  g.setAttribute('transform','translate('+m.x+' '+m.y+') scale('+(m.s||1)+')');
+  if(!IS_MOBILE) g.setAttribute('filter','url(#brush)');
+  var inner = document.createElementNS(SVGNS,'g');
+  inner.setAttribute('class','mk mark-'+m.k);
+  inner.innerHTML = MARK_TPL[m.k](m);
+  g.appendChild(inner);
+  gm.appendChild(g);
+  if(animate){
+    g.style.opacity = '0';
+    g.getBoundingClientRect();
+    g.style.transition = 'opacity 1.4s ease';
+    g.style.opacity = '1';
+    drawOn(g, 'path, line');
+    inkDropXY(m.x, m.y);
+  }
+  return g;
+}
+function applyMarks(){
+  if(!S.marks) return;
+  for(var i=0;i<S.marks.length;i++){
+    var m = S.marks[i];
+    if(m.t==='add'){ createMark(m, false); }
+    else if(m.t==='hide'){ var el = refEl(m.eid); if(el) el.style.display='none'; }
+  }
+}
+function inkDropXY(x, y){
+  var svg = document.getElementById('scene');
+  var c = document.createElementNS(SVGNS,'circle');
+  c.setAttribute('cx',x); c.setAttribute('cy',y); c.setAttribute('r','2');
+  c.setAttribute('fill','none'); c.setAttribute('stroke','#39423e');
+  c.setAttribute('stroke-width','1.5'); c.setAttribute('opacity','0.5');
+  svg.appendChild(c);
+  var t0 = null;
+  function tick(ts){
+    if(t0===null) t0 = ts;
+    var k = (ts - t0) / 900;
+    if(k >= 1){ svg.removeChild(c); return; }
+    c.setAttribute('r', String(2 + k*26));
+    c.setAttribute('opacity', String(0.5*(1-k)));
+    requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+}
+
+function studioNote(msg){
+  var el = document.getElementById('studio-note');
+  if(el) el.textContent = msg || '';
+}
+function renderStudio(){
+  studioMode = null; placeKind = null;
+  var chips = '';
+  for(var i=0;i<KINDS.length;i++){
+    chips += '<button id="chip-'+KINDS[i].k+'" onclick="pickKind(\''+KINDS[i].k+'\')">'+KINDS[i].n+'</button>';
+  }
+  show(
+    '<p class="end-title">画 意</p>' +
+    '<p class="hint">这幅画现在交给你。想添什么，先点一个物象，再在画上点一处落笔；' +
+    '点「擦一笔」后，再点画里任何一笔，就能擦去它；不满意就「取消上一笔」。你添的每一笔都会存进画卷，导出时原样带上。</p>' +
+    '<div class="btns chips">' + chips + '</div>' +
+    '<div id="zi-row" style="display:none; margin-top:12px;"><input type="text" id="zi-text" maxlength="12" placeholder="想题在画上的字（12字内）"></div>' +
+    '<div class="btns">' +
+    '<button id="erase-btn" onclick="toggleErase()">擦一笔</button>' +
+    '<button onclick="undoMark()">取消上一笔</button>' +
+    '<button id="alive-btn" onclick="toggleAlive()">' + (S.alive?'静下来':'动起来') + '</button>' +
+    '<button onclick="exportPNG()">导出画卷</button>' +
+    '<button class="quiet" onclick="exitStudio()">回到成卷</button>' +
+    '</div>' +
+    '<p class="warn" id="studio-note"></p>' +
+    '<p class="save-note" id="copy-note"></p>'
+  );
+}
+function clearChipActive(){
+  for(var i=0;i<KINDS.length;i++){
+    var b = document.getElementById('chip-'+KINDS[i].k);
+    if(b) b.classList.remove('on');
+  }
+}
+function pickKind(k){
+  var svg = document.getElementById('scene');
+  if(studioMode==='erase') toggleErase();
+  studioMode = 'place'; placeKind = k;
+  clearChipActive();
+  var b = document.getElementById('chip-'+k);
+  if(b) b.classList.add('on');
+  svg.classList.add('placing');
+  var ziRow = document.getElementById('zi-row');
+  if(ziRow) ziRow.style.display = (k==='zi') ? 'block' : 'none';
+  if(k==='zi'){
+    studioNote('先写下想题的字，再在画上点一处落款。');
+    setTimeout(function(){ var t=document.getElementById('zi-text'); if(t) t.focus(); }, 50);
+  } else {
+    studioNote('好——在画上点一处落笔。');
+  }
+}
+function toggleErase(){
+  var svg = document.getElementById('scene');
+  var b = document.getElementById('erase-btn');
+  if(studioMode==='erase'){
+    studioMode = null;
+    svg.classList.remove('erasing');
+    if(b) b.classList.remove('on');
+    studioNote('');
+  } else {
+    studioMode = 'erase'; placeKind = null;
+    clearChipActive();
+    svg.classList.remove('placing');
+    svg.classList.add('erasing');
+    var ziRow = document.getElementById('zi-row');
+    if(ziRow) ziRow.style.display = 'none';
+    if(b) b.classList.add('on');
+    studioNote('点画中任何一笔，擦去它。再点「擦一笔」退出。');
+  }
+}
+function exitPlaceMode(){
+  var svg = document.getElementById('scene');
+  studioMode = null; placeKind = null;
+  svg.classList.remove('placing');
+  clearChipActive();
+}
+function undoMark(){
+  if(!S.marks || S.marks.length===0){ studioNote('没有可取消的笔了。'); return; }
+  var last = S.marks.pop();
+  if(last.t==='add'){
+    var el = document.querySelector('[data-mark="'+last.id+'"]');
+    if(el && el.parentNode) el.parentNode.removeChild(el);
+  } else if(last.t==='hide'){
+    var el2 = refEl(last.eid);
+    if(el2) el2.style.display = '';
+  }
+  save();
+  studioNote('已取消上一笔。');
+}
+function toggleAlive(){
+  S.alive = !S.alive; save();
+  document.getElementById('scene').classList.toggle('alive', S.alive);
+  var b = document.getElementById('alive-btn');
+  if(b) b.textContent = S.alive ? '静下来' : '动起来';
+}
+function exitStudio(){
+  var svg = document.getElementById('scene');
+  studioMode = null; placeKind = null;
+  svg.classList.remove('placing'); svg.classList.remove('erasing');
+  finish();
+}
+
+function svgPoint(e){
+  var svg = document.getElementById('scene');
+  var r = svg.getBoundingClientRect();
+  return { x: (e.clientX - r.left) * 900 / r.width, y: (e.clientY - r.top) * 520 / r.height };
+}
+function findEraseTarget(e){
+  var t = e.target.closest ? e.target.closest('[data-mark]') : null;
+  if(t) return t;
+  t = e.target.closest ? e.target.closest('[data-eid]') : null;
+  if(t) return t;
+  var svg = document.getElementById('scene');
+  var cands = svg.querySelectorAll('[data-eid], [data-mark]');
+  var best = null, bd = 26;
+  for(var i=0;i<cands.length;i++){
+    var el = cands[i];
+    if(el.style.display==='none') continue;
+    var b;
+    try{ b = el.getBoundingClientRect(); }catch(err){ continue; }
+    if(!b.width && !b.height) continue;
+    var cx = b.left + b.width/2, cy = b.top + b.height/2;
+    var d = Math.max(Math.abs(e.clientX-cx) - b.width/2, Math.abs(e.clientY-cy) - b.height/2);
+    if(d < bd){ bd = d; best = el; }
+  }
+  return best;
+}
+function sceneClick(e){
+  if(studioMode==='place' && placeKind){
+    var p = svgPoint(e);
+    var m = { t:'add', k:placeKind, x:Math.round(p.x), y:Math.round(p.y),
+              s:+(0.85 + Math.random()*0.4).toFixed(2), id:'m'+Date.now() };
+    if(placeKind==='zi'){
+      var t = document.getElementById('zi-text');
+      var tx = t ? t.value.trim() : '';
+      if(!tx){ studioNote('先写下想题的字。'); return; }
+      m.tx = tx; m.s = 1;
+    }
+    S.marks.push(m); save();
+    createMark(m, true);
+    exitPlaceMode();
+    studioNote('已落笔。可继续添别的，或「取消上一笔」。');
+  } else if(studioMode==='erase'){
+    var el = findEraseTarget(e);
+    if(!el){ studioNote('这里没有笔墨——点画中有东西的地方。'); return; }
+    var ref = el.hasAttribute('data-mark') ? 'mark:'+el.getAttribute('data-mark') : el.getAttribute('data-eid');
+    el.style.display = 'none';
+    S.marks.push({ t:'hide', eid:ref }); save();
+    studioNote('擦去一笔。');
+  }
+}
+
 document.getElementById('paper').classList.add('shown');
+if(!S.marks) S.marks = [];
+if(typeof S.alive === 'undefined') S.alive = false;
+assignEids();
+ensureMarksGroup();
+applyMarks();
+if(S.alive) document.getElementById('scene').classList.add('alive');
+document.getElementById('scene').addEventListener('click', sceneClick);
 paint();
 if(S.phase === 'walk' && S.pending && (S.pending.length>0 || S.skipped.length>0)){
   if(S.pending.length===0){ S.pending=S.skipped; S.skipped=[]; }
