@@ -71,15 +71,16 @@
   .end-title{font-size:24px; letter-spacing:.4em; text-indent:.4em; margin-bottom:14px;}
 
   .dim-g{transition:opacity 2.2s ease;}
-  .st0{opacity:.13;} .st1{opacity:.58;} .st2{opacity:1;}
+  .st0{opacity:.22;} .st1{opacity:.58;} .st2{opacity:1;}
   .detail{opacity:0; transition:opacity 2.2s ease;}
+  .st1 .detail{opacity:0.7;}
   .st2 .detail{opacity:1;}
   .rich{opacity:0; transition:opacity 2.2s ease;}
   .rich.shown{opacity:1;}
   .endmark{opacity:0; transition:opacity 2.4s ease;}
   .endmark.shown{opacity:1;}
-  @keyframes bloom{from{filter:blur(3.5px);}to{filter:blur(0);}}
-  .bloom{animation:bloom 1.9s ease;}
+  @keyframes bloom{from{filter:blur(6px);}to{filter:blur(0);}}
+  .bloom{animation:bloom 2.4s ease;}
   @keyframes drift{from{transform:translateX(-13px);}to{transform:translateX(13px);}}
   @keyframes drift2{from{transform:translateX(10px);}to{transform:translateX(-10px);}}
   .drift1{animation:drift 26s ease-in-out infinite alternate;}
@@ -88,7 +89,7 @@
     h1.title{font-size:26px;}
     .question{font-size:18px;}
     body{padding:14px 8px 40px;}
-    .st0{opacity:0.28;}
+    .st0{opacity:0.35;}
     svg{min-height:280px;}
     .paper{min-height:280px;}
   }
@@ -386,12 +387,12 @@ function richLen(dim){
   return n;
 }
 
-var RICH_AT = 12;
+var RICH_AT = 8;
 function inkOpacity(d){
   var st = stageOf(d);
-  if(st===0) return 0.13;
+  if(st===0) return 0.22;
   var f = Math.min(1, richLen(d)/20);
-  return Math.min(1, 0.55 + 0.3*f + (st===2 ? 0.25 : 0));
+  return Math.min(1, 0.68 + 0.27*f + (st===2 ? 0.10 : 0));
 }
 var prevStages = null, prevRich = {};
 function paint(){
@@ -405,7 +406,7 @@ function paint(){
     g.style.opacity = st===0 ? '' : String(inkOpacity(d));
     if(st>was){
       (function(gg){ setTimeout(function(){ gg.classList.remove('bloom'); }, 2000); })(g);
-      if(st===2) drawOn(g);
+      if(st>=1) drawOn(g);
     }
     prevStages[d] = st;
     var rg = g.querySelector('.rich');
