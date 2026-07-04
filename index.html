@@ -87,6 +87,9 @@
   .drift2{animation:drift2 34s ease-in-out infinite alternate;}
 
   .chips button{font-size:14px; padding:6px 16px; letter-spacing:.1em; text-indent:.1em;}
+  .vq{margin-top:16px;}
+  .vq-q{color:var(--ink-soft); font-size:15px; letter-spacing:.08em; margin-bottom:2px;}
+  .vq-note{display:block; color:var(--ink-mist); font-size:12.5px; letter-spacing:.06em; margin-bottom:8px;}
   button.on{background:var(--ink); color:var(--paper); border-color:var(--ink);}
   svg.placing{cursor:crosshair;}
   svg.erasing{cursor:pointer;}
@@ -126,14 +129,15 @@
   @keyframes flap2{0%,100%{transform:rotate(-5deg);}50%{transform:rotate(22deg);}}
   .alive #g-wu .drift1{animation:cloud-l 15s ease-in-out infinite alternate;}
   .alive #g-wu .drift2{animation:cloud-r 18s ease-in-out infinite alternate;}
-  .alive #g-shui > path{transform-box:fill-box; animation:wave 8s ease-in-out infinite alternate;}
-  .alive #g-shui > path:nth-of-type(2){animation-duration:11s; animation-delay:-3s;}
-  .alive #g-shui > path:nth-of-type(4){animation-duration:13s; animation-delay:-6s;}
-  .alive #g-zhou{transform-box:fill-box; transform-origin:center; animation:sail 20s ease-in-out infinite alternate;}
+  .alive #g-shui .v > path{transform-box:fill-box; animation:wave 8s ease-in-out infinite alternate;}
+  .alive #g-shui .v > path:nth-of-type(2){animation-duration:11s; animation-delay:-3s;}
+  .alive #g-shui .v > path:nth-of-type(4){animation-duration:13s; animation-delay:-6s;}
+  .alive #g-zhou .v-a, .alive #g-zhou .v-b{transform-box:fill-box; transform-origin:center; animation:sail 20s ease-in-out infinite alternate;}
+  .alive #g-zhou .v-c{transform-box:fill-box; animation:wave 9s ease-in-out infinite alternate;}
   .alive #g-zhou .detail circle{animation:flicker 2.6s ease-in-out infinite;}
   .alive #g-ren .detail{animation:birdcross 12s ease-in infinite;}
   .alive #g-ren .rich{animation:birdcross 12s ease-in infinite; animation-delay:-5s;}
-  .alive #g-ren > path, .alive #g-ren > circle, .alive #g-ren > line{transform-box:fill-box; animation:walkbob 2.4s ease-in-out infinite;}
+  .alive #g-ren .v > path, .alive #g-ren .v > circle, .alive #g-ren .v > line{transform-box:fill-box; animation:walkbob 2.4s ease-in-out infinite;}
   .alive #g-ting .rich{transform-box:fill-box; transform-origin:50% 0%; animation:breeze 6s ease-in-out infinite alternate;}
   .alive .mark-he{animation:cranefly 9s ease-in infinite;}
   .alive .mark-he .wg-u{transform-box:fill-box; transform-origin:88% 100%; animation:flap .7s ease-in-out infinite;}
@@ -176,6 +180,7 @@
     <rect id="grain-rect" x="0" y="0" width="900" height="520" filter="url(#grain)"/>
 
     <g id="g-shan" class="dim-g st0" filter="url(#brush)">
+      <g class="v v-a">
       <path d="M0 346 C54 330 92 257 128 184 C156 128 184 82 218 93 C252 104 276 168 309 219 C337 263 365 297 408 323 C304 314 202 312 113 323 C64 329 28 340 0 358 Z" fill="#7f9589" opacity=".9" filter="url(#dry-brush)"/>
       <path d="M88 312 C126 250 160 168 205 142 C248 117 280 203 319 272 C260 236 179 219 88 312 Z" fill="#596f64" opacity=".62" filter="url(#dry-brush)"/>
       <path d="M22 338 C74 286 106 214 146 156 C174 116 206 102 235 132 C262 160 281 214 318 270 C232 242 124 274 22 338 Z" fill="#9baea3" opacity=".35" filter="url(#dry-brush)"/>
@@ -213,9 +218,57 @@
         <circle cx="194" cy="206" r="1.5" fill="#34413c" opacity=".46"/>
         <circle cx="212" cy="218" r="1.2" fill="#34413c" opacity=".42"/>
       </g>
+      </g>
+      <g class="v v-b" style="display:none">
+        <path d="M52 352 C104 332 146 244 176 156 C190 114 200 88 209 80 C221 88 236 134 254 194 C272 252 298 310 336 348 C240 336 144 338 52 352 Z" fill="#7f9589" opacity=".9" filter="url(#dry-brush)"/>
+        <path d="M146 306 C170 236 190 164 207 112 C224 154 242 224 264 294 C226 264 184 266 146 306 Z" fill="#596f64" opacity=".6" filter="url(#dry-brush)"/>
+        <path d="M455 252 C540 234 620 230 700 238 C780 246 840 244 900 232 L900 262 C752 254 604 258 455 264 Z" fill="#b5c3ba" opacity=".55" filter="url(#dry-brush)"/>
+        <path d="M186 142 q-16 70 -46 134" stroke="#405149" stroke-width="1.4" fill="none" opacity=".6"/>
+        <path d="M209 96 q6 74 24 154" stroke="#405149" stroke-width="1.3" fill="none" opacity=".62"/>
+        <path d="M228 164 q18 68 46 130" stroke="#405149" stroke-width="1.2" fill="none" opacity=".5"/>
+        <path d="M167 210 q-12 56 -36 104" stroke="#405149" stroke-width="1.1" fill="none" opacity=".48"/>
+        <circle cx="206" cy="98" r="2.2" fill="#34413c" opacity=".6"/>
+        <circle cx="196" cy="116" r="1.8" fill="#34413c" opacity=".55"/>
+        <circle cx="216" cy="120" r="1.7" fill="#34413c" opacity=".5"/>
+        <g class="detail">
+          <path d="M240 262 C239 256 240 250 240 244" stroke="#4a5350" stroke-width="1.6" fill="none"/>
+          <path d="M240 246 l-13 -5 M240 246 l-14 2 M240 246 l-10 9 M240 246 l11 -7" stroke="#3f4a44" stroke-width="1" fill="none" opacity=".7"/>
+          <path d="M700 238 C714 208 726 192 738 190 C750 194 760 214 772 238 C748 232 724 232 700 238 Z" fill="#b5c3ba" opacity=".5"/>
+          <path d="M158 246 q-10 44 -28 84" stroke="#405149" stroke-width="1" fill="none" opacity=".44"/>
+          <circle cx="188" cy="150" r="1.7" fill="#34413c" opacity=".5"/>
+          <circle cx="176" cy="176" r="1.5" fill="#34413c" opacity=".46"/>
+        </g>
+        <g class="rich">
+          <path d="M198 128 q10 -22 12 -40 M219 140 q6 -24 2 -44" stroke="#34413c" stroke-width="1" fill="none" opacity=".4"/>
+          <path d="M540 232 Q620 214 700 222 T880 218" stroke="#d5dcd7" stroke-width="5" fill="none" opacity=".5"/>
+          <circle cx="232" cy="188" r="1.4" fill="#34413c" opacity=".44"/>
+        </g>
+      </g>
+      <g class="v v-c" style="display:none">
+        <path d="M0 336 C70 314 150 306 230 314 C310 322 366 334 408 344 C272 340 136 342 0 350 Z" fill="#8ba092" opacity=".78" filter="url(#dry-brush)"/>
+        <path d="M30 312 C100 294 180 290 252 298 C306 304 348 312 386 320 C268 312 146 314 30 320 Z" fill="#9baea3" opacity=".5" filter="url(#dry-brush)"/>
+        <path d="M455 240 C560 224 670 222 780 230 C830 234 870 232 900 228 L900 250 C752 244 604 246 455 250 Z" fill="#b5c3ba" opacity=".55" filter="url(#dry-brush)"/>
+        <path d="M40 330 q60 -12 130 -10 M210 322 q70 -6 140 4" stroke="#405149" stroke-width="1.1" fill="none" opacity=".42"/>
+        <path d="M90 306 q50 -8 110 -6" stroke="#405149" stroke-width="1" fill="none" opacity=".4"/>
+        <circle cx="96" cy="312" r="1.8" fill="#34413c" opacity=".5"/>
+        <circle cx="118" cy="308" r="1.5" fill="#34413c" opacity=".46"/>
+        <circle cx="260" cy="310" r="1.6" fill="#34413c" opacity=".48"/>
+        <circle cx="282" cy="314" r="1.4" fill="#34413c" opacity=".44"/>
+        <g class="detail">
+          <path d="M150 298 l0 -11 M150 287 l-6 -4 M150 287 l6 -4 M168 300 l0 -10 M168 290 l-5 -4 M168 290 l5 -4 M185 298 l0 -9 M185 289 l-5 -3 M185 289 l5 -3" stroke="#44534d" stroke-width="1.1" fill="none" opacity=".65"/>
+          <path d="M560 236 Q650 226 740 232 T900 234" stroke="#c9d3cb" stroke-width="4" fill="none" opacity=".5"/>
+          <circle cx="206" cy="302" r="1.3" fill="#34413c" opacity=".44"/>
+        </g>
+        <g class="rich">
+          <path d="M470 226 Q580 214 690 218 T900 214" stroke="#d5dcd7" stroke-width="5" fill="none" opacity=".5"/>
+          <path d="M330 318 q40 -6 80 -2" stroke="#405149" stroke-width=".9" fill="none" opacity=".36"/>
+          <circle cx="352" cy="316" r="1.3" fill="#34413c" opacity=".4"/>
+        </g>
+      </g>
     </g>
 
     <g id="g-wu" class="dim-g st0">
+      <g class="v v-a">
       <ellipse class="drift1" cx="170" cy="290" rx="170" ry="26" fill="#f5f1e6" opacity=".92"/>
       <ellipse class="drift2" cx="450" cy="268" rx="190" ry="24" fill="#f5f1e6" opacity=".9"/>
       <ellipse class="drift1" cx="730" cy="292" rx="160" ry="26" fill="#f5f1e6" opacity=".92"/>
@@ -245,9 +298,48 @@
         <path class="drift2" d="M120 316 Q220 300 320 306 T500 302" stroke="#aeb9b1" stroke-width="1.4" fill="none"/>
         <path class="drift1" d="M660 268 Q720 254 780 260 T880 256" stroke="#aeb9b1" stroke-width="1.2" fill="none" opacity=".8"/>
       </g>
+      </g>
+      <g class="v v-b" style="display:none">
+        <g class="drift1">
+          <path d="M120 306 Q134 278 166 280 Q176 256 210 260 Q238 244 264 262 Q296 256 306 280 Q330 282 328 306 Z" fill="#f5f1e6" opacity=".97"/>
+          <path d="M120 306 Q134 278 166 280 Q176 256 210 260 Q238 244 264 262 Q296 256 306 280 Q330 282 328 306" stroke="#a4b0a8" stroke-width="1.4" fill="none"/>
+          <path d="M150 296 q16 -14 38 -10 M212 278 q18 -8 36 2" stroke="#b6c0b8" stroke-width="1" fill="none" opacity=".8"/>
+        </g>
+        <g class="drift2">
+          <path d="M440 292 Q452 262 486 264 Q498 240 534 246 Q564 232 590 252 Q620 248 630 272 Q652 276 648 296 Z" fill="#f5f1e6" opacity=".95"/>
+          <path d="M440 292 Q452 262 486 264 Q498 240 534 246 Q564 232 590 252 Q620 248 630 272 Q652 276 648 296" stroke="#a4b0a8" stroke-width="1.4" fill="none"/>
+          <path d="M478 280 q18 -12 40 -8" stroke="#b6c0b8" stroke-width="1" fill="none" opacity=".8"/>
+        </g>
+        <g class="drift1">
+          <path d="M700 302 Q712 280 740 282 Q752 264 782 270 Q808 262 824 280 Q844 284 840 302 Z" fill="#f5f1e6" opacity=".95"/>
+          <path d="M700 302 Q712 280 740 282 Q752 264 782 270 Q808 262 824 280 Q844 284 840 302" stroke="#a4b0a8" stroke-width="1.3" fill="none"/>
+        </g>
+        <g class="detail">
+          <ellipse class="drift2" cx="380" cy="322" rx="200" ry="14" fill="#f5f1e6" opacity=".7"/>
+          <path class="drift2" d="M300 318 Q330 300 366 302 Q384 288 410 296 Q436 292 446 310" stroke="#aeb9b1" stroke-width="1.2" fill="none" opacity=".85"/>
+        </g>
+        <g class="rich">
+          <ellipse class="drift1" cx="620" cy="322" rx="130" ry="12" fill="#f5f1e6" opacity=".7"/>
+          <path class="drift1" d="M560 320 Q574 300 600 302 Q616 290 640 298 Q662 296 668 314" stroke="#aeb9b1" stroke-width="1.2" fill="none" opacity=".8"/>
+        </g>
+      </g>
+      <g class="v v-c" style="display:none">
+        <path class="drift1" d="M110 296 Q210 286 310 292 T510 286" stroke="#b6c0b8" stroke-width="1.1" fill="none" opacity=".8"/>
+        <path class="drift2" d="M480 272 Q560 264 640 270 T800 264" stroke="#c0c8bf" stroke-width="1" fill="none" opacity=".7"/>
+        <ellipse class="drift2" cx="600" cy="276" rx="130" ry="9" fill="#f5f1e6" opacity=".6"/>
+        <ellipse class="drift1" cx="220" cy="298" rx="120" ry="8" fill="#f5f1e6" opacity=".55"/>
+        <path class="drift1" d="M640 300 q30 -14 66 -10" stroke="#c0c8bf" stroke-width=".9" fill="none" opacity=".6"/>
+        <g class="detail">
+          <path class="drift2" d="M180 316 Q260 308 340 312 T480 308" stroke="#c0c8bf" stroke-width=".9" fill="none" opacity=".65"/>
+        </g>
+        <g class="rich">
+          <path class="drift1" d="M700 288 Q760 280 820 284 T900 282" stroke="#c0c8bf" stroke-width=".9" fill="none" opacity=".6"/>
+        </g>
+      </g>
     </g>
 
     <g id="g-shui" class="dim-g st0" filter="url(#brush)">
+      <g class="v v-a">
       <path d="M470 430 Q560 422 640 430 T860 428" stroke="#8aa098" stroke-width="1.8" fill="none"/>
       <path d="M500 452 Q590 444 668 452 T880 450" stroke="#8aa098" stroke-width="1.8" fill="none"/>
       <path d="M480 474 Q560 468 640 474 T800 472" stroke="#8aa098" stroke-width="1.8" fill="none"/>
@@ -269,9 +361,56 @@
         <path d="M760 440 q10 -16 24 -10 q-4 10 -14 12 q-6 4 -10 -2 Z" fill="#55645d" opacity=".7"/>
         <circle cx="792" cy="446" r="1.4" fill="#8aa098"/><circle cx="800" cy="450" r="1.1" fill="#8aa098"/>
       </g>
+      </g>
+      <g class="v v-b" style="display:none">
+        <path d="M430 430 q26 -10 50 2 q26 -12 50 2 q26 -12 52 2 q26 -12 52 2 q26 -12 52 2 q24 -10 48 2" stroke="#8aa098" stroke-width="1.8" fill="none"/>
+        <path d="M460 456 q26 -10 50 2 q26 -12 52 2 q26 -12 52 2 q26 -12 52 2 q24 -10 50 2" stroke="#8aa098" stroke-width="1.7" fill="none"/>
+        <path d="M446 480 q28 -9 54 2 q28 -10 54 2 q28 -10 56 2 q26 -9 52 2" stroke="#8aa098" stroke-width="1.6" fill="none"/>
+        <path d="M600 446 C606 434 622 432 630 442 C640 438 648 448 640 456 C628 462 606 458 600 446 Z" fill="#6f8479" opacity=".9"/>
+        <path d="M584 450 q-10 6 -22 6 M648 452 q10 8 22 8" stroke="#a9bcb4" stroke-width="1.4" fill="none"/>
+        <circle cx="580" cy="444" r="1.4" fill="#a9bcb4"/><circle cx="662" cy="448" r="1.4" fill="#a9bcb4"/><circle cx="654" cy="440" r="1.1" fill="#a9bcb4"/>
+        <g class="detail">
+          <path d="M740 468 C746 458 758 456 764 464 C770 462 776 470 770 476 C760 480 744 478 740 468 Z" fill="#7f9186" opacity=".85"/>
+          <path d="M728 472 q-8 6 -18 6 M774 474 q8 6 18 6" stroke="#a9bcb4" stroke-width="1.2" fill="none"/>
+          <circle cx="722" cy="466" r="1.2" fill="#a9bcb4"/>
+          <path d="M330 300 C332 320 328 340 336 360" stroke="#a9bcb4" stroke-width="2.4" fill="none"/>
+          <path d="M338 302 C340 322 336 342 344 362" stroke="#a9bcb4" stroke-width="1.4" fill="none"/>
+          <circle cx="336" cy="368" r="1.6" fill="#a9bcb4"/><circle cx="344" cy="372" r="1.3" fill="#a9bcb4"/>
+        </g>
+        <g class="rich">
+          <path d="M470 500 q40 -8 82 0 q40 -8 82 0 q40 -8 80 0" stroke="#8aa098" stroke-width="1.3" fill="none"/>
+          <path d="M700 430 q10 -16 24 -10 q-4 10 -14 12 q-6 4 -10 -2 Z" fill="#55645d" opacity=".7"/>
+          <circle cx="732" cy="436" r="1.4" fill="#8aa098"/>
+        </g>
+      </g>
+      <g class="v v-c" style="display:none">
+        <path d="M560 452 Q650 444 740 452 T880 450" stroke="#8aa098" stroke-width="1.8" fill="none"/>
+        <path d="M580 476 Q660 470 740 476 T870 474" stroke="#8aa098" stroke-width="1.6" fill="none"/>
+        <path d="M620 440 Q694 432 768 440" stroke="#8aa098" stroke-width="1.4" fill="none"/>
+        <path d="M500 462 Q540 456 580 460" stroke="#94a59a" stroke-width="1.3" fill="none" opacity=".8"/>
+        <g>
+          <path d="M676 316 q22 -8 46 -2" stroke="#55645d" stroke-width="1.5" fill="none"/>
+          <path d="M690 320 C691 350 687 384 694 420" stroke="#a9bcb4" stroke-width="5.5" fill="none" opacity=".85"/>
+          <path d="M697 320 C699 352 695 386 702 420" stroke="#c6d2ca" stroke-width="2.4" fill="none"/>
+          <path d="M683 322 C685 354 681 386 687 418" stroke="#a9bcb4" stroke-width="2" fill="none" opacity=".7"/>
+          <ellipse cx="694" cy="428" rx="36" ry="8" fill="#f5f1e6" opacity=".9"/>
+          <circle cx="674" cy="424" r="1.6" fill="#a9bcb4"/><circle cx="714" cy="426" r="1.4" fill="#a9bcb4"/><circle cx="694" cy="418" r="1.2" fill="#c6d2ca"/>
+        </g>
+        <g class="detail">
+          <path d="M710 330 C712 356 708 382 714 412" stroke="#a9bcb4" stroke-width="1.6" fill="none" opacity=".7"/>
+          <path d="M600 498 Q690 490 780 498" stroke="#8aa098" stroke-width="1.3" fill="none"/>
+          <ellipse cx="660" cy="436" rx="20" ry="5" fill="#f5f1e6" opacity=".7"/>
+        </g>
+        <g class="rich">
+          <path d="M770 452 q10 -16 24 -10 q-4 10 -14 12 q-6 4 -10 -2 Z" fill="#55645d" opacity=".7"/>
+          <circle cx="800" cy="458" r="1.4" fill="#8aa098"/>
+          <path d="M654 340 q-8 26 -4 54" stroke="#c6d2ca" stroke-width="1" fill="none" opacity=".5"/>
+        </g>
+      </g>
     </g>
 
     <g id="g-jing" class="dim-g st0" filter="url(#brush)">
+      <g class="v v-a">
       <path d="M74 512 C124 471 153 447 202 427 C251 407 270 386 311 367 C334 356 345 347 358 337" stroke="#6f7b73" stroke-width="12" fill="none" stroke-linecap="round" opacity=".12" filter="url(#dry-brush)"/>
       <path class="ink-line" d="M78 508 C128 470 154 447 202 428 C252 408 271 387 311 368 C334 357 345 348 358 338" stroke="#34413c" stroke-width="1.8" fill="none" stroke-linecap="round" opacity=".58"/>
       <path d="M91 499 q18 -13 38 -21 M144 458 q24 -15 51 -24 M215 420 q28 -11 50 -30 M282 381 q26 -14 47 -29" stroke="#34413c" stroke-width="1" fill="none" opacity=".42"/>
@@ -292,6 +431,47 @@
         <circle cx="397" cy="310" r="1.5" fill="#44534d" opacity=".56"/><circle cx="410" cy="301" r="1.4" fill="#44534d" opacity=".54"/>
         <path d="M419 292 C438 282 453 268 466 252" stroke="#849089" stroke-width="4.6" fill="none" stroke-linecap="round" opacity=".12" filter="url(#dry-brush)"/>
       </g>
+      </g>
+      <g class="v v-b" style="display:none">
+        <path d="M76 510 C126 472 154 448 202 428 C252 408 271 387 311 368 C334 357 345 348 358 338" stroke="#6f7b73" stroke-width="11" fill="none" stroke-linecap="round" opacity=".13" filter="url(#dry-brush)"/>
+        <path d="M92 496 l21 -8 M105 485 l21 -8 M119 475 l21 -8 M134 465 l21 -8 M150 456 l21 -8 M166 447 l22 -8 M183 438 l22 -8 M200 429 l22 -8 M217 420 l22 -8 M234 411 l22 -8 M251 403 l22 -8 M268 394 l22 -8 M285 386 l21 -8 M301 377 l21 -8 M317 369 l20 -8 M333 360 l19 -8" stroke="#34413c" stroke-width="1.5" fill="none" opacity=".6"/>
+        <path class="ink-line" d="M90 500 C136 466 162 444 208 425 C254 406 274 388 314 368" stroke="#34413c" stroke-width="1" fill="none" opacity=".4"/>
+        <path class="ink-line" d="M112 502 C154 472 180 452 224 432 C268 413 288 396 326 376" stroke="#34413c" stroke-width="1" fill="none" opacity=".4"/>
+        <circle cx="128" cy="488" r="1.3" fill="#44534d" opacity=".55"/>
+        <circle cx="196" cy="438" r="1.2" fill="#44534d" opacity=".5"/>
+        <circle cx="286" cy="390" r="1.2" fill="#44534d" opacity=".48"/>
+        <g class="detail">
+          <path d="M346 352 l19 -8 M357 344 l18 -8 M369 336 l17 -8 M381 328 l16 -7 M392 321 l15 -7" stroke="#34413c" stroke-width="1.4" fill="none" opacity=".58"/>
+          <path d="M120 470 C124 464 132 464 134 470 C138 468 142 472 138 476 L122 476 Z" fill="#7f9186" opacity=".8"/>
+          <circle cx="340" cy="352" r="1.4" fill="#44534d" opacity=".6"/>
+        </g>
+        <g class="rich">
+          <path d="M402 308 l15 -8 M413 299 l14 -8 M424 290 l14 -8 M435 281 l13 -8 M446 272 l13 -8 M457 263 l12 -8" stroke="#34413c" stroke-width="1.2" fill="none" opacity=".48"/>
+          <path d="M419 292 C438 282 453 268 466 252" stroke="#849089" stroke-width="4.6" fill="none" stroke-linecap="round" opacity=".12" filter="url(#dry-brush)"/>
+        </g>
+      </g>
+      <g class="v v-c" style="display:none">
+        <path d="M74 512 C104 490 128 472 156 456" stroke="#6f7b73" stroke-width="12" fill="none" stroke-linecap="round" opacity=".12" filter="url(#dry-brush)"/>
+        <path class="ink-line" d="M78 508 C108 488 132 470 158 454" stroke="#34413c" stroke-width="1.8" fill="none" stroke-linecap="round" opacity=".58"/>
+        <path class="ink-line" d="M160 452 Q202 416 244 420" stroke="#39423e" stroke-width="2.2" fill="none"/>
+        <path class="ink-line" d="M166 458 Q202 428 240 428" stroke="#39423e" stroke-width="1.3" fill="none" opacity=".8"/>
+        <path d="M172 448 l0 6 M186 438 l0 7 M202 432 l0 8 M218 430 l0 8 M232 430 l0 7" stroke="#39423e" stroke-width="1" fill="none" opacity=".75"/>
+        <path class="ink-line" d="M244 420 C274 402 300 386 330 366 C344 358 350 348 358 338" stroke="#34413c" stroke-width="1.8" fill="none" stroke-linecap="round" opacity=".58"/>
+        <path d="M148 478 q46 10 104 4" stroke="#8aa098" stroke-width="1.2" fill="none" opacity=".8"/>
+        <path d="M170 490 q34 7 66 3" stroke="#8aa098" stroke-width="1" fill="none" opacity=".7"/>
+        <circle cx="124" cy="490" r="1.3" fill="#44534d" opacity=".55"/>
+        <circle cx="272" cy="398" r="1.2" fill="#44534d" opacity=".5"/>
+        <g class="detail">
+          <path d="M358 338 C376 327 381 319 398 311" stroke="#34413c" stroke-width="1.7" fill="none" stroke-linecap="round" opacity=".58"/>
+          <path d="M138 470 C138 460 136 452 139 444 M144 472 C144 464 143 456 146 450" stroke="#4a5350" stroke-width="1" fill="none" opacity=".7"/>
+          <path d="M139 444 l-6 -4 M139 450 l7 3 M146 450 l6 -4" stroke="#4a5350" stroke-width=".9" fill="none" opacity=".7"/>
+          <circle cx="307" cy="378" r="1.4" fill="#44534d" opacity=".6"/>
+        </g>
+        <g class="rich">
+          <path d="M398 311 C415 301 424 290 439 276 C451 265 459 257 469 246" stroke="#34413c" stroke-width="1.55" fill="none" stroke-linecap="round" opacity=".48"/>
+          <path d="M419 292 C438 282 453 268 466 252" stroke="#849089" stroke-width="4.6" fill="none" stroke-linecap="round" opacity=".12" filter="url(#dry-brush)"/>
+        </g>
+      </g>
     </g>
 
     <g id="g-decor" opacity=".55" filter="url(#brush)">
@@ -307,6 +487,7 @@
     </g>
 
     <g id="g-ting" class="dim-g st0" filter="url(#brush)">
+      <g class="v v-a">
       <path d="M336 356 Q378 344 420 356" stroke="#55645d" stroke-width="2" fill="none"/>
       <path d="M350 358 L346 366 M362 359 L358 367 M398 359 L402 367 M410 358 L414 366" stroke="#6b756f" stroke-width="1.3" fill="none" opacity=".7"/>
       <path d="M348 332 Q378 312 408 332" stroke="#39423e" stroke-width="3.5" fill="none" stroke-linecap="round"/>
@@ -333,9 +514,47 @@
         <path d="M346 316 C352 320 356 328 358 340" stroke="#39423e" stroke-width=".9" fill="none" opacity=".7"/>
         <path d="M346 310 q-11 2 -17 0 l0 7 q9 3 17 0 z" fill="#a63d2a" opacity=".85"/>
       </g>
+      </g>
+      <g class="v v-b" style="display:none">
+        <path d="M340 334 Q378 306 416 334" stroke="#4a5350" stroke-width="3.6" fill="none" stroke-linecap="round"/>
+        <path d="M352 326 l-5 9 M364 318 l-3 9 M378 314 l0 9 M392 318 l3 9 M404 326 l5 9" stroke="#55645d" stroke-width="1" fill="none" opacity=".8"/>
+        <line x1="352" y1="336" x2="352" y2="356" stroke="#39423e" stroke-width="1.8"/>
+        <line x1="404" y1="336" x2="404" y2="356" stroke="#39423e" stroke-width="1.8"/>
+        <line x1="347" y1="356" x2="409" y2="356" stroke="#39423e" stroke-width="2.6"/>
+        <path d="M372 356 L372 341 L386 341 L386 356" stroke="#39423e" stroke-width="1.4" fill="none"/>
+        <circle cx="361" cy="345" r="3.4" stroke="#39423e" stroke-width="1.1" fill="none"/>
+        <path d="M358 345 l6 0 M361 342 l0 6" stroke="#39423e" stroke-width=".7" opacity=".8"/>
+        <g class="detail">
+          <path d="M414 356 l0 -9 M421 356 l0 -7 M428 356 l0 -9 M412 350 l18 -2" stroke="#4a5350" stroke-width="1.1" fill="none" opacity=".8"/>
+          <path d="M336 362 C339 356 346 355 348 360 C352 358 356 363 352 367 L336 367 Z" fill="#7f9186" opacity=".8"/>
+        </g>
+        <g class="rich">
+          <path d="M398 312 C402 302 396 294 401 284 C404 278 402 272 405 266" stroke="#9aa79e" stroke-width="1.3" fill="none" opacity=".8"/>
+          <path d="M340 352 q-8 -2 -12 -8" stroke="#4a5350" stroke-width="1" fill="none" opacity=".7"/>
+          <circle cx="416" cy="342" r="2" fill="#a63d2a" opacity=".8"/>
+        </g>
+      </g>
+      <g class="v v-c" style="display:none">
+        <path d="M348 354 L410 354 L402 344 L356 344 Z" fill="#7f9186" opacity=".85"/>
+        <path d="M352 344 q26 -4 52 0" stroke="#55645d" stroke-width="1.1" fill="none" opacity=".7"/>
+        <ellipse cx="372" cy="340" rx="8" ry="3" fill="none" stroke="#4a5350" stroke-width="1.2"/>
+        <ellipse cx="372" cy="340" rx="4" ry="1.5" fill="none" stroke="#4a5350" stroke-width=".8" opacity=".7"/>
+        <path d="M394 336 q3 -6 8 -6 q5 0 7 5 q1 5 -4 6 q-7 2 -11 -5 Z" fill="none" stroke="#39423e" stroke-width="1.1"/>
+        <path d="M409 334 l5 -3" stroke="#39423e" stroke-width="1" fill="none"/>
+        <g class="detail">
+          <line x1="386" y1="338" x2="386" y2="328" stroke="#4a5350" stroke-width="1"/>
+          <path d="M386 328 C384 322 388 318 386 312" stroke="#9aa79e" stroke-width="1" fill="none" opacity=".8"/>
+          <path d="M338 360 C341 354 348 353 350 358 C354 356 358 361 354 365 L338 365 Z" fill="#7f9186" opacity=".8"/>
+        </g>
+        <g class="rich">
+          <path d="M386 312 C383 304 388 298 385 290 C383 284 386 278 384 272" stroke="#9aa79e" stroke-width="1.1" fill="none" opacity=".75"/>
+          <circle cx="404" cy="350" r="1.8" fill="#a63d2a" opacity=".75"/>
+        </g>
+      </g>
     </g>
 
     <g id="g-ren" class="dim-g st0" filter="url(#brush)">
+      <g class="v v-a">
       <circle cx="205" cy="402" r="3" fill="#2f3734"/>
       <path d="M205 405 C202 412 210 416 206 424 C214 430 198 436 204 444" stroke="#2f3734" stroke-width="2.2" fill="none" stroke-linecap="round"/>
       <path d="M204 444 L198 452" stroke="#2f3734" stroke-width="1.7" fill="none"/>
@@ -351,9 +570,53 @@
         <path d="M550 78 Q554 72 558 78 Q562 72 566 78" stroke="#39423e" stroke-width="1.2" fill="none" stroke-linecap="round"/>
         <path d="M588 92 Q592 87 596 92 Q600 87 604 92" stroke="#39423e" stroke-width="1" fill="none" stroke-linecap="round" opacity=".8"/>
       </g>
+      </g>
+      <g class="v v-b" style="display:none">
+        <g>
+          <path d="M190 448 C192 438 204 434 214 438 C222 442 222 450 214 453 C204 457 192 456 190 448 Z" fill="#7f9186" opacity=".85"/>
+          <path d="M188 444 q-6 2 -10 6" stroke="#4e5c56" stroke-width=".9" fill="none" opacity=".6"/>
+        </g>
+        <circle cx="203" cy="417" r="3" fill="#2f3734"/>
+        <path d="M203 420 C200 427 199 433 201 439" stroke="#2f3734" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+        <path d="M201 431 Q209 429 213 437" stroke="#2f3734" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+        <path d="M213 437 L212 444" stroke="#2f3734" stroke-width="1.5" fill="none"/>
+        <path d="M202 424 Q208 428 211 434" stroke="#2f3734" stroke-width="1.1" fill="none" opacity=".85"/>
+        <g class="detail">
+          <path d="M486 94 Q490 88 494 94 Q498 88 502 94" stroke="#39423e" stroke-width="1.3" fill="none" stroke-linecap="round"/>
+          <path d="M524 104 Q528 99 532 104 Q536 99 540 104" stroke="#39423e" stroke-width="1.1" fill="none" stroke-linecap="round"/>
+          <path d="M462 100 Q466 95 470 100 Q474 95 478 100" stroke="#39423e" stroke-width="1" fill="none" stroke-linecap="round" opacity=".85"/>
+        </g>
+        <g class="rich">
+          <path d="M550 78 Q554 72 558 78 Q562 72 566 78" stroke="#39423e" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+          <path d="M588 92 Q592 87 596 92 Q600 87 604 92" stroke="#39423e" stroke-width="1" fill="none" stroke-linecap="round" opacity=".8"/>
+        </g>
+      </g>
+      <g class="v v-c" style="display:none">
+        <circle cx="208" cy="399" r="3" fill="#2f3734"/>
+        <path d="M208 402 C211 411 214 419 217 427" stroke="#2f3734" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+        <path d="M217 427 L226 444" stroke="#2f3734" stroke-width="1.7" fill="none"/>
+        <path d="M216 427 L203 442" stroke="#2f3734" stroke-width="1.7" fill="none"/>
+        <path d="M210 409 Q217 405 223 404" stroke="#2f3734" stroke-width="1.4" fill="none"/>
+        <line x1="224" y1="402" x2="231" y2="446" stroke="#2f3734" stroke-width="1.2"/>
+        <path d="M211 408 C204 414 197 418 189 420 M214 416 C208 422 201 426 194 429" stroke="#2f3734" stroke-width="1.1" fill="none" opacity=".8"/>
+        <g>
+          <path d="M182 432 q8 -2 14 1 M176 440 q8 -2 15 1" stroke="#4e5c56" stroke-width=".9" fill="none" opacity=".5"/>
+          <circle cx="196" cy="447" r="1" fill="#44534d" opacity=".6"/>
+          <circle cx="189" cy="450" r=".8" fill="#44534d" opacity=".5"/>
+        </g>
+        <g class="detail">
+          <path d="M486 94 Q490 88 494 94 Q498 88 502 94" stroke="#39423e" stroke-width="1.3" fill="none" stroke-linecap="round"/>
+          <path d="M524 104 Q528 99 532 104 Q536 99 540 104" stroke="#39423e" stroke-width="1.1" fill="none" stroke-linecap="round"/>
+        </g>
+        <g class="rich">
+          <path d="M550 78 Q554 72 558 78 Q562 72 566 78" stroke="#39423e" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+          <path d="M588 92 Q592 87 596 92 Q600 87 604 92" stroke="#39423e" stroke-width="1" fill="none" stroke-linecap="round" opacity=".8"/>
+        </g>
+      </g>
     </g>
 
     <g id="g-zhou" class="dim-g st0" filter="url(#brush)">
+      <g class="v v-a">
       <path d="M592 414 Q620 428 648 414 Q620 420 592 414 Z" fill="#39423e"/>
       <line x1="612" y1="405" x2="612" y2="382" stroke="#39423e" stroke-width="1.6"/>
       <path d="M612 384 L636 396 L612 402 Z" fill="#7f9186" opacity=".85"/>
@@ -374,6 +637,44 @@
         <line x1="843" y1="413" x2="879" y2="413" stroke="#55645d" stroke-width="1.3"/>
         <path d="M818 412 C816 400 820 392 816 384" stroke="#39423e" stroke-width="1.4" fill="none"/>
         <path d="M816 390 l-9 -5 M816 396 l10 4 M816 384 l-8 -3" stroke="#39423e" stroke-width="1" fill="none"/>
+      </g>
+      </g>
+      <g class="v v-b" style="display:none">
+        <path d="M586 416 Q620 430 654 416 Q620 422 586 416 Z" fill="#39423e"/>
+        <circle cx="604" cy="407" r="2.2" fill="#2f3734"/>
+        <line x1="604" y1="409" x2="604" y2="414" stroke="#2f3734" stroke-width="1.4"/>
+        <circle cx="634" cy="407" r="2.2" fill="#2f3734"/>
+        <line x1="634" y1="409" x2="634" y2="414" stroke="#2f3734" stroke-width="1.4"/>
+        <line x1="616" y1="412" x2="623" y2="412" stroke="#39423e" stroke-width="1.2"/>
+        <line x1="646" y1="410" x2="658" y2="424" stroke="#39423e" stroke-width="1.1"/>
+        <path d="M572 422 q14 6 28 0" stroke="#8aa098" stroke-width="1" fill="none" opacity=".7"/>
+        <path d="M652 422 q14 6 28 0" stroke="#8aa098" stroke-width="1" fill="none" opacity=".7"/>
+        <g class="detail">
+          <circle cx="619" cy="409" r="1.6" fill="#a63d2a"/>
+          <path d="M585 432 q35 7 70 0" stroke="#8aa098" stroke-width="1.2" fill="none"/>
+        </g>
+        <g class="rich">
+          <path d="M836 404 q14 5 28 0 q-14 3 -28 0 Z" fill="#55645d" opacity=".75"/>
+          <path d="M848 402 L848 390 L858 397 L848 400 Z" fill="#7f9186" opacity=".7"/>
+          <path d="M820 410 q30 -6 58 -2" stroke="#8aa098" stroke-width="1" fill="none" opacity=".6"/>
+        </g>
+      </g>
+      <g class="v v-c" style="display:none">
+        <path d="M590 418 Q622 430 652 415 Q620 422 590 418 Z" fill="#39423e"/>
+        <path d="M604 414 Q618 404 634 412" stroke="#39423e" stroke-width="1.5" fill="none"/>
+        <line x1="576" y1="402" x2="573" y2="426" stroke="#39423e" stroke-width="1.6"/>
+        <path d="M577 410 Q586 416 596 417" stroke="#39423e" stroke-width=".8" fill="none" opacity=".8"/>
+        <path d="M664 424 C664 412 662 402 665 392 M671 424 C671 414 670 406 673 398" stroke="#4a5350" stroke-width="1" fill="none"/>
+        <path d="M665 392 l-7 -5 M665 398 l8 3 M673 398 l7 -5 M673 404 l-7 3" stroke="#4a5350" stroke-width=".9" fill="none"/>
+        <path d="M580 426 q20 6 44 2" stroke="#8aa098" stroke-width="1" fill="none" opacity=".7"/>
+        <g class="detail">
+          <path d="M614 408 q3 -4 7 -4 q-2 4 -7 4 Z" fill="#55645d" opacity=".8"/>
+          <path d="M648 430 q16 5 34 2" stroke="#8aa098" stroke-width="1" fill="none" opacity=".7"/>
+        </g>
+        <g class="rich">
+          <path d="M790 420 q40 -6 84 -2" stroke="#9db0a6" stroke-width="1.2" fill="none" opacity=".6"/>
+          <path d="M834 410 Q838 405 842 410 Q846 405 850 410" stroke="#39423e" stroke-width="1" fill="none" opacity=".7"/>
+        </g>
       </g>
     </g>
 
@@ -439,8 +740,53 @@ var ZHI_LINES = {
   zhou:'问舟，你答：「{a}」。同船者不须多，共渡即可。'
 };
 
+var VQ = {
+  jing:{q:'这条径，在你脚下是什么模样？', opts:[['a','迂回曲径'],['b','层层石阶'],['c','遇水搭桥']]},
+  wu:{q:'此刻胸中的云气，像哪一种？', opts:[['a','平霭漫漫'],['b','浓云翻涌'],['c','轻烟将散']]},
+  shui:{q:'你的水，是怎样流的？', opts:[['a','静水深流'],['b','溪涧奔涌'],['c','飞瀑直下']]},
+  shan:{q:'你心里那座山，是什么形状？', opts:[['a','层峦叠嶂'],['b','孤峰独立'],['c','平远绵延']]},
+  ting:{q:'歇脚之处，你想要哪一种？', opts:[['a','一座空亭'],['b','一间茅庐'],['c','一方石台']]},
+  ren:{q:'画中的你，此刻正——', opts:[['a','拄杖徐行'],['b','坐看云起'],['c','振衣疾行']]},
+  zhou:{q:'你的舟上，是何光景？', opts:[['a','扬帆待发'],['b','两人对坐'],['c','野渡空舟']]}
+};
+function variantOf(dim){ return (S.choices && S.choices[dim]) || 'a'; }
+function variantName(dim){
+  var k = variantOf(dim), opts = VQ[dim] ? VQ[dim].opts : [];
+  for(var i=0;i<opts.length;i++){ if(opts[i][0]===k) return opts[i][1]; }
+  return '';
+}
+function applyVariant(dim, animate){
+  var g = document.getElementById('g-'+dim);
+  if(!g) return;
+  var k = variantOf(dim);
+  var kids = g.children;
+  for(var i=0;i<kids.length;i++){
+    var el = kids[i];
+    if(!el.classList || !el.classList.contains('v')) continue;
+    var on = el.classList.contains('v-'+k);
+    el.style.display = on ? '' : 'none';
+    if(on && animate){
+      el.classList.add('bloom');
+      (function(e){ setTimeout(function(){ e.classList.remove('bloom'); }, 2400); })(el);
+      drawOn(el, 'path, line');
+    }
+  }
+}
+function applyChoices(){ for(var d in DIMS) applyVariant(d, false); }
+function pickVariant(dim, k){
+  if(!S.choices) S.choices = {};
+  S.choices[dim] = k; save();
+  applyVariant(dim, true);
+  inkDrop(dim);
+  var row = document.getElementById('vq-chips');
+  if(row){
+    var bs = row.querySelectorAll('button');
+    for(var i=0;i<bs.length;i++) bs[i].classList.toggle('on', bs[i].getAttribute('data-k')===k);
+  }
+}
+
 var KEY = 'xinxiang-v1';
-var S = load() || {hao:'', pending:null, skipped:[], answers:{}, phase:'start'};
+var S = load() || {hao:'', pending:null, skipped:[], answers:{}, phase:'start', choices:{}};
 
 function load(){
   try{ var raw = localStorage.getItem(KEY); return raw ? JSON.parse(raw) : null; }
@@ -481,11 +827,13 @@ function paint(){
       if(st>=1) drawOn(g);
     }
     prevStages[d] = st;
-    var rg = g.querySelector('.rich');
-    if(rg){
+    var rgs = g.querySelectorAll('.rich');
+    if(rgs.length){
       var rich = st===2 || (st>0 && richLen(d)>=RICH_AT);
-      rg.setAttribute('class','rich' + (rich ? ' shown' : ''));
-      if(rich && !prevRich[d] && !first) drawOn(rg, 'path, line');
+      for(var ri=0;ri<rgs.length;ri++){
+        rgs[ri].setAttribute('class','rich' + (rich ? ' shown' : ''));
+        if(rich && !prevRich[d] && !first) drawOn(rgs[ri], 'path, line');
+      }
       prevRich[d] = rich;
     }
   }
@@ -554,7 +902,7 @@ function renderStart(){
     '<p class="sub">一次纸上的徒步——以问作杖，以答为墨</p>' +
     '<p class="hint">整卷共十四问，皆可略过。每答一问，画上便着一次墨：' +
     '山是你的信念，雾是你的情绪，水是你的能量，径是你的方向，亭是你的空，行人是你的身体，舟是你的同行者。' +
-    '墨随言深——你在哪一处写得越多，那一处的山水便越深。答案只存在你自己的浏览器里，不会被上传。</p>' +
+    '墨随言深——你在哪一处写得越多，那一处的山水便越深。遇到点选之问，选哪一笔，画里便是哪一笔——每个人的山水，各不相同。答案只存在你自己的浏览器里，不会被上传。</p>' +
     '<div><input type="text" id="hao" maxlength="4" placeholder="给自己起个号，将刻作印" value="' + esc(S.hao) + '"></div>' +
     '<div class="btns"><button class="primary" onclick="begin()">入 山</button>' +
     (hasProgress() ? '<button onclick="resume()">续 画</button>' : '') +
@@ -566,9 +914,9 @@ function begin(){
   if(hasProgress() && !confirm('重新入山会抹去上一卷的笔墨。要续画请选「续画」，确定重新开始吗？')) return;
   var hao = document.getElementById('hao').value.trim();
   S.hao = hao || '无名';
-  S.pending = []; S.skipped = []; S.answers = {};
+  S.pending = []; S.skipped = []; S.answers = {}; S.choices = {};
   for(var i=0;i<Q.length;i++) S.pending.push(i);
-  S.phase = 'walk'; save(); paint();
+  S.phase = 'walk'; save(); applyChoices(); paint();
   step();
 }
 function resume(){
@@ -577,6 +925,18 @@ function resume(){
   if(!S.pending || (S.pending.length===0 && S.skipped.length===0)){ finish(); return; }
   if(S.pending.length===0){ S.pending = S.skipped; S.skipped = []; }
   S.phase='walk'; save(); step();
+}
+
+function vqBlock(dim){
+  var vq = VQ[dim];
+  if(!vq || (S.choices && S.choices[dim])) return '';
+  var chips = '';
+  for(var c=0;c<vq.opts.length;c++){
+    chips += '<button data-k="' + vq.opts[c][0] + '" onclick="pickVariant(\'' + dim + '\',\'' + vq.opts[c][0] + '\')">' + vq.opts[c][1] + '</button>';
+  }
+  return '<div class="vq"><p class="vq-q">' + esc(vq.q) + '</p>' +
+    '<span class="vq-note">点选其一，这一笔便落在画上</span>' +
+    '<div class="btns chips" id="vq-chips">' + chips + '</div></div>';
 }
 
 function step(){
@@ -590,6 +950,7 @@ function step(){
     '<p class="dim-note">' + dim.note + '</p>' +
     '<p class="question">' + esc(item.q) + '</p>' +
     '<textarea id="ans" placeholder="随手写，不必成文……"></textarea>' +
+    vqBlock(item.dim) +
     '<p class="warn" id="warn"></p>' +
     '<div class="btns">' +
     '<button class="primary" onclick="inkDown(' + i + ')">落 笔</button>' +
@@ -691,7 +1052,7 @@ function reAnswer(){
 function restart(){
   if(!confirm('重新入山会抹去这一卷的所有笔墨，确定吗？')) return;
   localStorage.removeItem(KEY);
-  S = {hao:S.hao, pending:null, skipped:[], answers:{}, phase:'start', marks:[], alive:false};
+  S = {hao:S.hao, pending:null, skipped:[], answers:{}, phase:'start', marks:[], alive:false, choices:{}};
   document.getElementById('g-tiba').classList.remove('shown');
   document.getElementById('g-seal').classList.remove('shown');
   var gm = document.getElementById('g-marks');
@@ -699,7 +1060,7 @@ function restart(){
   var hidden = document.querySelectorAll('#scene [data-eid]');
   for(var i=0;i<hidden.length;i++){ hidden[i].style.display = ''; }
   document.getElementById('scene').classList.remove('alive');
-  paint(); renderStart();
+  applyChoices(); paint(); renderStart();
 }
 
 function note(msg){
@@ -727,6 +1088,16 @@ function copyPrompt(){
       lines.push('答：' + S.answers[i]);
       lines.push('');
     }
+  }
+  var chosen = [];
+  for(var d in VQ){
+    if(S.choices && S.choices[d]){
+      chosen.push(DIMS[d].name.split(' ')[0] + '，我选了「' + variantName(d) + '」');
+    }
+  }
+  if(chosen.length){
+    lines.push('我还亲手为画中景物点了样貌：' + chosen.join('；') + '。');
+    lines.push('');
   }
   lines.push('请你作为一位懂佛道、温柔而清醒的朋友，读完这些回答之后：');
   lines.push('1. 为我写一篇更深的「山水志」——看见我的模式、我的能量流向、我此刻真正的处境；');
@@ -882,12 +1253,13 @@ function exportPNG(){
     var st = stageOf(d);
     var g = clone.querySelector('#g-'+d);
     g.setAttribute('opacity', st===0 ? '0.13' : String(inkOpacity(d)));
-    var det = g.querySelector('.detail');
-    if(det) det.setAttribute('opacity', st===2 ? '1' : '0');
-    var rgc = g.querySelector('.rich');
-    if(rgc){
-      var live = document.getElementById('g-'+d).querySelector('.rich');
-      rgc.setAttribute('opacity', (live && live.classList.contains('shown')) ? '1' : '0');
+    var dets = g.querySelectorAll('.detail');
+    for(var di=0;di<dets.length;di++){ dets[di].setAttribute('opacity', st===2 ? '1' : '0'); }
+    var liveRich = document.getElementById('g-'+d).querySelectorAll('.rich');
+    var cloneRich = g.querySelectorAll('.rich');
+    for(var ri=0;ri<cloneRich.length;ri++){
+      var shownR = liveRich[ri] && liveRich[ri].classList.contains('shown');
+      cloneRich[ri].setAttribute('opacity', shownR ? '1' : '0');
     }
   }
   ['g-tiba','g-seal'].forEach(function(id){
@@ -1200,9 +1572,11 @@ function sceneClick(e){
 
 document.getElementById('paper').classList.add('shown');
 if(!S.marks) S.marks = [];
+if(!S.choices) S.choices = {};
 if(typeof S.alive === 'undefined') S.alive = false;
 assignEids();
 ensureMarksGroup();
+applyChoices();
 applyMarks();
 if(S.alive) document.getElementById('scene').classList.add('alive');
 document.getElementById('scene').addEventListener('click', sceneClick);
