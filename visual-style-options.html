@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>心象山水笔墨方向</title>
+<style>
+  :root{
+    --paper:#f4efe2;
+    --ink:#26312d;
+    --soft:#6f7d73;
+    --line:#d8cfbd;
+    --seal:#a63b28;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    min-height:100vh;
+    background:#ebe3d2;
+    color:var(--ink);
+    font-family:"Kaiti SC","KaiTi","STKaiti","FangSong","Songti SC",serif;
+    padding:28px;
+  }
+  h1{
+    font-weight:400;
+    letter-spacing:.18em;
+    margin:0 0 8px;
+    font-size:30px;
+  }
+  .lead{
+    margin:0 0 22px;
+    color:#68736b;
+    line-height:1.8;
+    max-width:880px;
+  }
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:18px;
+  }
+  .card{
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:6px;
+    overflow:hidden;
+    box-shadow:0 10px 28px rgba(65,55,38,.08);
+  }
+  .art{
+    display:block;
+    width:100%;
+    height:auto;
+    background:var(--paper);
+  }
+  .body{
+    padding:15px 16px 18px;
+    border-top:1px solid rgba(110,96,72,.16);
+  }
+  h2{
+    font-size:20px;
+    font-weight:400;
+    letter-spacing:.12em;
+    margin:0 0 8px;
+  }
+  p{
+    margin:0;
+    color:#68736b;
+    font-size:14px;
+    line-height:1.8;
+  }
+  .note{
+    margin-top:18px;
+    color:#6f756e;
+    line-height:1.8;
+  }
+  @media (max-width:900px){
+    body{padding:18px}
+    .grid{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+  <h1>心象山水：笔墨方向对比</h1>
+  <p class="lead">当前画面的问题主要在三处：山形太几何，小径像虚线标注，墨色层次偏平。下面三版都是可在现有 SVG 里实现的方向，重点看整体气质和“小径入画”的感觉。</p>
+
+  <div class="grid">
+    <section class="card">
+      <svg class="art" viewBox="0 0 420 260" xmlns="http://www.w3.org/2000/svg" aria-label="溪山行旅方向">
+        <defs>
+          <filter id="roughA"><feTurbulence type="fractalNoise" baseFrequency=".025 .09" numOctaves="3" seed="11"/><feDisplacementMap in="SourceGraphic" scale="3.2"/></filter>
+          <radialGradient id="washA" cx="40%" cy="40%" r="65%"><stop offset="0" stop-color="#6f8378" stop-opacity=".5"/><stop offset=".62" stop-color="#82978b" stop-opacity=".22"/><stop offset="1" stop-color="#82978b" stop-opacity="0"/></radialGradient>
+        </defs>
+        <rect width="420" height="260" fill="#f4efe2"/>
+        <path d="M0 186 C42 174 72 118 101 62 C123 20 148 18 175 62 C203 107 225 151 263 181 C224 177 166 177 115 181 C72 185 33 194 0 205 Z" fill="#7f9488" opacity=".8" filter="url(#roughA)"/>
+        <path d="M70 164 C99 118 126 75 158 70 C184 66 201 110 223 149 C183 127 129 111 70 164 Z" fill="#53695f" opacity=".42" filter="url(#roughA)"/>
+        <path d="M244 128 C282 87 320 58 360 90 C379 104 391 131 420 141 L420 172 C360 159 314 156 260 166 Z" fill="#a8b7ae" opacity=".48" filter="url(#roughA)"/>
+        <path d="M236 91 C282 60 322 42 360 54 C384 62 394 50 420 58" stroke="#c7d0c8" stroke-width="9" fill="none" opacity=".55" filter="url(#roughA)"/>
+        <ellipse cx="168" cy="166" rx="130" ry="24" fill="#f4efe2" opacity=".88"/>
+        <ellipse cx="236" cy="144" rx="100" ry="18" fill="#f4efe2" opacity=".7"/>
+        <path d="M43 248 C74 222 94 206 121 196 C153 184 180 174 209 160 C220 154 230 150 241 146" stroke="#59665f" stroke-width="6" fill="none" stroke-linecap="round" opacity=".16" filter="url(#roughA)"/>
+        <path d="M44 248 C76 224 94 207 122 197 C154 185 181 175 209 161 C220 155 229 151 241 147" stroke="#313d38" stroke-width="1.8" fill="none" stroke-linecap="round" opacity=".58"/>
+        <path d="M61 233 q18 -8 35 -15 M112 199 q18 -8 35 -12 M167 176 q18 -7 34 -16" stroke="#2f3935" stroke-width="1.1" fill="none" opacity=".42"/>
+        <path d="M100 100 q16 35 45 63 M128 75 q18 52 57 92 M52 184 q40 -18 89 -19" stroke="#40524b" stroke-width="1.2" fill="none" opacity=".45"/>
+        <rect x="372" y="28" width="24" height="28" rx="3" fill="#a63b28"/>
+      </svg>
+      <div class="body">
+        <h2>A 溪山行旅</h2>
+        <p>山更厚，小径由淡墨铺底加几笔皴线形成，有行旅感。整体更接近古画里的“可游可居”。</p>
+      </div>
+    </section>
+
+    <section class="card">
+      <svg class="art" viewBox="0 0 420 260" xmlns="http://www.w3.org/2000/svg" aria-label="米家云山方向">
+        <defs>
+          <filter id="roughB"><feTurbulence type="fractalNoise" baseFrequency=".04 .12" numOctaves="4" seed="19"/><feDisplacementMap in="SourceGraphic" scale="4"/></filter>
+        </defs>
+        <rect width="420" height="260" fill="#f4efe2"/>
+        <ellipse cx="135" cy="128" rx="116" ry="30" fill="#f4efe2" opacity=".94"/>
+        <ellipse cx="268" cy="118" rx="118" ry="25" fill="#f4efe2" opacity=".86"/>
+        <path d="M12 180 C58 169 92 125 123 78 C149 40 178 43 202 81 C231 129 248 163 296 174 C225 168 174 172 118 180 C74 186 38 193 12 204 Z" fill="#879b90" opacity=".52" filter="url(#roughB)"/>
+        <path d="M224 150 C267 105 310 72 351 92 C378 105 392 126 420 133 L420 164 C357 153 293 153 224 169 Z" fill="#a5b4ac" opacity=".32" filter="url(#roughB)"/>
+        <g opacity=".55" filter="url(#roughB)">
+          <circle cx="112" cy="112" r="3" fill="#40524b"/><circle cx="126" cy="104" r="2.4" fill="#40524b"/><circle cx="140" cy="115" r="2.6" fill="#40524b"/>
+          <circle cx="161" cy="94" r="2.8" fill="#40524b"/><circle cx="176" cy="106" r="2.2" fill="#40524b"/><circle cx="188" cy="121" r="2.2" fill="#40524b"/>
+          <circle cx="278" cy="111" r="2.2" fill="#586a62"/><circle cx="294" cy="103" r="2" fill="#586a62"/><circle cx="318" cy="106" r="2.1" fill="#586a62"/>
+        </g>
+        <path d="M27 244 C56 220 86 204 122 193 C158 182 192 176 226 157 C245 147 261 140 282 132" stroke="#6f7b73" stroke-width="7" fill="none" stroke-linecap="round" opacity=".13" filter="url(#roughB)"/>
+        <path d="M31 244 C62 221 89 205 124 194 C160 183 191 177 226 158 C246 147 263 140 283 132" stroke="#34423c" stroke-width="1.4" fill="none" stroke-linecap="round" opacity=".52"/>
+        <path d="M48 232 c8 -4 18 -7 28 -9 M95 206 c10 -4 22 -7 34 -9 M151 184 c15 -3 29 -8 42 -14 M226 157 c14 -6 27 -13 40 -20" stroke="#34423c" stroke-width=".9" fill="none" opacity=".5"/>
+        <path d="M38 165 Q102 152 171 157 T315 151" stroke="#a8b4ad" stroke-width="1.4" fill="none" opacity=".75"/>
+        <path d="M72 180 Q130 169 196 173 T330 168" stroke="#b7c0b8" stroke-width="1" fill="none" opacity=".8"/>
+        <rect x="372" y="28" width="24" height="28" rx="3" fill="#a63b28"/>
+      </svg>
+      <div class="body">
+        <h2>B 米家云山</h2>
+        <p>用雾、点苔、淡墨团块制造韵味。画面更空灵，小径像云气里显出来，适合“心象”主题。</p>
+      </div>
+    </section>
+
+    <section class="card">
+      <svg class="art" viewBox="0 0 420 260" xmlns="http://www.w3.org/2000/svg" aria-label="简淡文人方向">
+        <defs>
+          <filter id="roughC"><feTurbulence type="fractalNoise" baseFrequency=".018 .08" numOctaves="3" seed="23"/><feDisplacementMap in="SourceGraphic" scale="2.4"/></filter>
+        </defs>
+        <rect width="420" height="260" fill="#f4efe2"/>
+        <path d="M38 184 C82 158 104 102 132 58 C151 28 173 32 194 70 C213 106 230 144 266 174" stroke="#60756a" stroke-width="22" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity=".28" filter="url(#roughC)"/>
+        <path d="M260 130 C292 94 326 72 361 91 C383 103 397 128 420 138" stroke="#9aaba2" stroke-width="17" fill="none" stroke-linecap="round" opacity=".25" filter="url(#roughC)"/>
+        <path d="M73 171 C113 150 133 102 156 70 C173 48 190 58 204 89 C219 123 234 151 261 172" stroke="#31423b" stroke-width="1.8" fill="none" opacity=".62"/>
+        <path d="M285 127 C316 96 341 87 365 101 C386 113 398 130 420 139" stroke="#5f7169" stroke-width="1.3" fill="none" opacity=".38"/>
+        <path d="M80 166 q20 16 40 25 M112 136 q19 19 39 32 M148 94 q10 23 24 43" stroke="#31423b" stroke-width="1" fill="none" opacity=".42"/>
+        <ellipse cx="204" cy="158" rx="130" ry="18" fill="#f4efe2" opacity=".82"/>
+        <path d="M50 244 C76 225 107 204 142 194 C177 184 204 177 229 162 C249 150 264 138 281 123" stroke="#2d3834" stroke-width="1.2" fill="none" stroke-linecap="round" opacity=".64"/>
+        <path d="M50 244 C82 229 109 209 144 199 C181 188 206 181 232 166" stroke="#6f7b73" stroke-width="5" fill="none" stroke-linecap="round" opacity=".09" filter="url(#roughC)"/>
+        <path d="M50 224 q56 -17 120 -14 T304 202" stroke="#9eaba4" stroke-width="1" fill="none" opacity=".65"/>
+        <path d="M60 236 q50 -15 106 -13 T284 216" stroke="#b2bbb4" stroke-width=".9" fill="none" opacity=".6"/>
+        <path d="M306 57 q5 -5 10 0 M316 57 q5 -5 10 0 M342 69 q4 -4 8 0 M350 69 q4 -4 8 0" stroke="#31423b" stroke-width="1.2" fill="none" opacity=".8"/>
+        <rect x="372" y="28" width="24" height="28" rx="3" fill="#a63b28"/>
+      </svg>
+      <div class="body">
+        <h2>C 简淡文人</h2>
+        <p>减少实体块面，靠线条、淡痕、留白成画。更雅，但成图冲击力会轻一些。</p>
+      </div>
+    </section>
+  </div>
+
+  <p class="note">我建议以 B 为主，吸收 A 的小径厚度和 C 的线条节制：远山云气更有韵味，近处小径也能从“虚线”变成真正的笔墨路径。</p>
+</body>
+</html>

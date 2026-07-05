@@ -1478,7 +1478,7 @@ function finish(){
     '<button id="alive-btn" onclick="toggleAlive()">' + (S.alive?'静下来':'动起来') + '</button>' +
     '<button onclick="exportPNG()">导出画卷</button>' +
     '<button id="style-btn" onclick="cycleStyle()">换一种笔意</button>' +
-    '<button onclick="copyPrompt()">复制这段文字去见AI</button>' +
+    '<button onclick="copyPrompt()">让 AI 读这一卷</button>' + '<button onclick="copyPaintPrompt()">让 AI 画这一卷</button>' +
     '<button onclick="duiduView()">两卷对读</button>' +
     (skippedLeft>0 ? '<button onclick="reAnswer()">补答略过的 ' + skippedLeft + ' 问</button>' : '') +
     '<button class="quiet" onclick="restart()">重新入山</button>' +
@@ -1558,6 +1558,49 @@ function copyPrompt(){
   lines.push('2. 指出我自己可能没看见的一处矛盾或一处宝藏；');
   lines.push('3. 给我未来方向的三个具体提示，不要空话。');
   copyText(lines.join('\n'), '已复制。去粘贴给你的 AI，让它替你深读这一卷');
+}
+
+var STYLE_PROMPT = {
+  shuimo:'纯水墨写意，只用墨色的浓淡干湿，大面积留白，不设颜色，笔意萧疏清远，近似南宋马远、元代倪瓒一路的简淡文人山水',
+  qianjiang:'浅绛设色，先以水墨勾皴出山石骨架，再罩染赭石与淡淡花青，少量朱红点染秋树，温润古雅，近似元代黄公望《富春山居》一路',
+  qinglv:'青绿设色，以石青石绿为主调，山色明净清丽，平远构图、远山一层层退入云雾，近似宋人青绿山水与张大千泼彩一路'
+};
+var PAINT_EL = {
+  shan:{a:'层峦叠嶂、山势绵延起伏',b:'一座孤峰兀然独立、直逼云天',c:'远山平远疏淡、一层层退入天际'},
+  wu:{a:'平缓的云霭漫过山腰',b:'浓云在峰峦之间翻涌奔腾',c:'一缕轻烟将散未散、天光初露'},
+  shui:{a:'山下一片静水、深沉不波',b:'溪涧在乱石间奔涌有声',c:'一道飞瀑自崖顶直落而下'},
+  jing:{a:'一条迂回的山间小径',b:'一道层层而上的石阶',c:'一座小桥横跨溪水'},
+  ting:{a:'一座临水的空亭',b:'一间竹篱茅庐',c:'一方石台'},
+  ren:{a:'一位布衣高士拄杖徐行',b:'一位布衣高士临流独坐、坐看云起',c:'一位布衣高士振衣疾行、衣袂飘举'},
+  zhou:{a:'江上一叶扁舟正欲扬帆',b:'江上一舟、两人对坐闲话',c:'江上一叶野渡空舟、随波自横'}
+};
+var SEASON_MOOD = {'春':'清和','夏':'苍润','秋':'萧疏','冬':'清寒'};
+var STYLE_PAPER = {shuimo:'纸本素净、通幅不着颜色，唯以墨分五色', qianjiang:'绢本或宣纸，赭石花青的淡雅浅设色', qinglv:'绢本青绿重设色、略带古旧暖调'};
+function paintEl(dim){ return PAINT_EL[dim][variantOf(dim)]; }
+function lastZi(){
+  if(!S.marks) return '';
+  for(var i=S.marks.length-1;i>=0;i--){ if(S.marks[i].t==='add' && S.marks[i].k==='zi' && S.marks[i].tx) return S.marks[i].tx; }
+  return '';
+}
+function buildPaintPrompt(){
+  var zi = lastZi(), hao = S.hao || '无名';
+  var mood = SEASON_MOOD[seasonWord()] || '清远';
+  var title = zi || hao;
+  var lines = [];
+  lines.push('请为我画一幅中国传统山水画，笔墨精到、格调高古，像博物馆里的古画真迹：');
+  lines.push('');
+  lines.push('【风格】' + (STYLE_PROMPT[S.style] || STYLE_PROMPT.shuimo) + '。');
+  lines.push('【远景】' + paintEl('shan') + '，' + paintEl('wu') + '。');
+  lines.push('【中景】' + paintEl('jing') + '沿山而上，通向水边的' + paintEl('ting') + '，' + paintEl('ren') + '。');
+  lines.push('【近景与水面】' + paintEl('shui') + '；' + paintEl('zhou') + '。');
+  lines.push('【题款】画面上方留白处，竖排题「' + title + '」，钤一枚朱文小印。');
+  lines.push('【意境】' + mood + '清远，讲究留白、虚实与气脉贯通，立轴或横卷，' + (STYLE_PAPER[S.style] || STYLE_PAPER.shuimo) + '。');
+  lines.push('');
+  lines.push('只画这一幅山水，不要出现任何多余的现代元素、边框或水印。');
+  return lines.join('\n');
+}
+function copyPaintPrompt(){
+  copyText(buildPaintPrompt(), '提示词已复制。推荐粘到「即梦 / 可灵 / 豆包 / Midjourney」等能画图的 AI；纯文字助手可能画不好国画');
 }
 
 var ORDER = ['jing','wu','shui','shan','ting','ren','zhou'];
@@ -1918,7 +1961,7 @@ function renderStudio(){
     '<button onclick="exportPNG()">导出画卷</button>' +
     '</div>' +
     '<div class="btns">' +
-    '<button onclick="copyPrompt()">复制这段文字去见AI</button>' +
+    '<button onclick="copyPrompt()">让 AI 读这一卷</button>' + '<button onclick="copyPaintPrompt()">让 AI 画这一卷</button>' +
     '<button onclick="duiduView()">两卷对读</button>' +
     (skippedLeft>0 ? '<button onclick="reAnswer()">补答略过的 ' + skippedLeft + ' 问</button>' : '') +
     '<button class="quiet" onclick="restart()">重新入山</button>' +
